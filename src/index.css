@@ -1,0 +1,45 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Serif+KR:wght@400;700;900&display=swap');
+
+@theme {
+  --color-obsidian: #0a0a0a;
+  --color-gold-light: #f3e5ab;
+  --color-gold: #d4af37;
+  --color-gold-dark: #b8860b;
+  --color-emerald: #064e3b;
+  --color-emerald-dark: #022c22;
+  
+  --font-serif: "Noto Serif KR", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+:root {
+  background-color: #0a0a0a;
+  color: #e5e2e1;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+}
+
+.gold-gradient {
+  background: linear-gradient(to right, #d4af37, #f3e5ab, #b8860b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.premium-border {
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
