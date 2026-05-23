@@ -44,17 +44,64 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
     }
   }, [selectedAddressId, user, deliveryAddresses]);
 
-  // 포트원 결제 SDK 스크립트 동적 로드
+  // 포트원 결제 SDK 및 Daum 우편번호 스크립트 동적 로드
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.iamport.kr/v1/iamport.js';
-    script.async = true;
-    document.body.appendChild(script);
+    const portoneScript = document.createElement('script');
+    portoneScript.src = 'https://cdn.iamport.kr/v1/iamport.js';
+    portoneScript.async = true;
+    document.body.appendChild(portoneScript);
+
+    const daumScript = document.createElement('script');
+    daumScript.src = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+    daumScript.async = true;
+    document.body.appendChild(daumScript);
 
     return () => {
-      document.body.removeChild(script);
+      if (document.body.contains(portoneScript)) {
+        document.body.removeChild(portoneScript);
+      }
+      if (document.body.contains(daumScript)) {
+        document.body.removeChild(daumScript);
+      }
     };
   }, []);
+
+  const handlePostcode = () => {
+    if (window.daum && window.daum.Postcode) {
+      new window.daum.Postcode({
+        oncomplete: function(data) {
+          let addr = '';
+          let extraAddr = '';
+
+          if (data.userSelectedType === 'R') {
+            addr = data.roadAddress;
+          } else {
+            addr = data.jibunAddress;
+          }
+
+          if (data.userSelectedType === 'R') {
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+              extraAddr += data.bname;
+            }
+            if (data.buildingName !== '' && data.apartment === 'Y') {
+              extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            if (extraAddr !== '') {
+              extraAddr = ' (' + extraAddr + ')';
+            }
+          }
+
+          setFormData(prev => ({
+            ...prev,
+            zipcode: data.zonecode,
+            baseAddress: addr + extraAddr
+          }));
+        }
+      }).open();
+    } else {
+      alert('주소 검색 서비스를 로드하는 중입니다. 잠시 후 다시 시도해주세요.');
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,7 +147,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
       pg: pgProvider,
       pay_method: 'card',
       merchant_uid: `mid_${Date.now()}`,
-      name: '오가피로 프리미엄 고농축액 Obsidian',
+      name: '오가피로 발효 오가피 농축액',
       amount: totalAmount,
       buyer_email: user?.email || 'buyer@example.com',
       buyer_name: formData.recipient,
@@ -136,11 +183,11 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
         <span>상품 정보로 돌아가기</span>
       </button>
 
-      <h3 className="text-2xl sm:text-3xl font-serif font-bold mb-5 text-white">주문서 작성 및 결제</h3>
+      <h3 className="text-xl sm:text-2xl font-bold mb-5 text-white">주문서</h3>
 
       {/* Order Brief */}
       <div className="p-5 rounded-2xl bg-white/2 border border-white/10 mb-6 space-y-3.5">
-        <div className="text-xs text-gray-300 font-bold uppercase tracking-wider border-b border-white/5 pb-2">주문 품목 요약</div>
+        <div className="text-xs text-gray-300 font-bold uppercase tracking-wider border-b border-white/5 pb-2">주문 내역</div>
         {cartItems.length > 0 ? (
           cartItems.map((item) => (
             <div key={item.id} className="flex justify-between text-xs font-semibold text-white">
@@ -156,7 +203,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
         )}
         <div className="flex justify-between text-xs text-gray-300 font-medium">
           <span>배송 방식</span>
-          <span className="font-bold text-gold">특급 안심 우체국 택배 (무료배송)</span>
+          <span className="font-bold text-gold">우체국 택배 (무료배송)</span>
         </div>
         <div className="border-t border-white/10 pt-3 flex justify-between text-sm font-black">
           <span className="text-white">최종 결제금액</span>
@@ -166,21 +213,20 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
 
       {/* Hybrid Banner Block */}
       {!user ? (
-        <div className="p-4 rounded-2xl bg-[#FEE500]/10 border border-[#FEE500]/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left mb-6">
+        <div className="p-4 rounded-2xl bg-white/3 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left mb-6">
           <div className="space-y-1">
-            <p className="text-xs font-bold text-[#FEE500] flex items-center justify-center sm:justify-start gap-1">
-              <Sparkles className="w-3.5 h-3.5 fill-current" />
-              <span>배송지 입력이 귀찮으신가요?</span>
+            <p className="text-xs font-bold text-white flex items-center justify-center sm:justify-start gap-1">
+              <span>카카오 로그인으로 간편 주문</span>
             </p>
-            <p className="text-[11px] text-gray-300 font-medium">카카오 로그인 한 번으로 주소록을 1초 만에 불러옵니다.</p>
+            <p className="text-[11px] text-gray-300 font-medium">카카오 로그인을 하시면 저장된 배송지를 자동으로 불러옵니다.</p>
           </div>
           <button 
             type="button"
             onClick={onKakaoLogin}
-            className="h-10 px-4 bg-[#FEE500] text-[#191919] text-xs font-bold rounded-xl hover:bg-[#FEE500]/90 transition-all flex items-center gap-1.5 cursor-pointer shadow-md shadow-[#FEE500]/5 shrink-0"
+            className="h-9 px-4 bg-[#FEE500] text-[#191919] text-xs font-bold rounded-xl hover:bg-[#FEE500]/90 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
           >
-            <MessageCircle className="w-4 h-4 fill-current" />
-            <span>카카오 1초 로그인</span>
+            <MessageCircle className="w-3.5 h-3.5 fill-current" />
+            <span>1초 로그인</span>
           </button>
         </div>
       ) : (
@@ -259,14 +305,24 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
 
           <div className="space-y-1">
             <label className="text-xs text-gray-300 font-bold">우편번호</label>
-            <input
-              type="text"
-              name="zipcode"
-              value={formData.zipcode}
-              onChange={handleChange}
-              placeholder="우편번호 (선택)"
-              className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all font-medium"
-            />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                name="zipcode"
+                value={formData.zipcode}
+                onChange={handleChange}
+                placeholder="우편번호"
+                readOnly
+                className="flex-1 h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all font-medium"
+              />
+              <button
+                type="button"
+                onClick={handlePostcode}
+                className="px-4 bg-white/5 border border-white/10 hover:border-gold text-gold rounded-xl text-xs font-bold transition-all cursor-pointer"
+              >
+                주소 찾기
+              </button>
+            </div>
           </div>
 
           <div className="space-y-1">

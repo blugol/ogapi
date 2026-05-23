@@ -6,7 +6,7 @@ export default function ProductDetail({ onPurchase, onAddToCart }) {
   const [quantity, setQuantity] = useState(1);
   const [showLegalInfo, setShowLegalInfo] = useState(false);
 
-  // 실제 사이트 기준 가격 반영 (오가피로 프리미엄 에디션: 45,000원)
+  // 실제 사이트 기준 가격 반영 (오가피로 750ml: 45,000원)
   const pricePerUnit = 45000; 
   const totalAmount = pricePerUnit * quantity;
 
@@ -30,12 +30,12 @@ export default function ProductDetail({ onPurchase, onAddToCart }) {
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent z-10"></div>
             <img 
               src="/assets/story_2.png" 
-              alt="오가피로 프리미엄 발효 농축액" 
+              alt="오가피로 발효 오가피 농축액" 
               className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
             />
             {/* Premium Badge */}
             <span className="absolute top-4 left-4 md:top-6 md:left-6 z-20 bg-gold text-black px-4 py-2 text-xs font-bold tracking-wider rounded-full">
-              프리미엄 발효 농축액
+              전통 발효 오가피 농축액
             </span>
           </motion.div>
 
@@ -43,18 +43,18 @@ export default function ProductDetail({ onPurchase, onAddToCart }) {
           <div className="grid grid-cols-3 gap-2.5 sm:gap-4 text-center">
             <div className="p-4 rounded-2xl bg-white/3 border border-white/10 flex flex-col justify-center space-y-1.5 hover:bg-white/5 transition-all">
               <ShieldCheck className="w-6 h-6 text-gold mx-auto" />
-              <p className="text-xs font-bold text-white leading-tight">최상급 원료</p>
-              <p className="text-[10px] text-gray-300 font-medium">100% 국내산 오가피</p>
+              <p className="text-xs font-bold text-white leading-tight">정직한 원료</p>
+              <p className="text-[10px] text-gray-300 font-medium">국내산 오가피 100%</p>
             </div>
             <div className="p-4 rounded-2xl bg-white/3 border border-white/10 flex flex-col justify-center space-y-1.5 hover:bg-white/5 transition-all">
               <Calendar className="w-6 h-6 text-gold mx-auto" />
-              <p className="text-xs font-bold text-white leading-tight">장인의 손길</p>
-              <p className="text-[10px] text-gray-300 font-medium">전통 천연발효 숙성</p>
+              <p className="text-xs font-bold text-white leading-tight">정성 어린 숙성</p>
+              <p className="text-[10px] text-gray-300 font-medium">전통 옹기 발효 숙성</p>
             </div>
             <div className="p-4 rounded-2xl bg-white/3 border border-white/10 flex flex-col justify-center space-y-1.5 hover:bg-white/5 transition-all">
               <FileText className="w-6 h-6 text-gold mx-auto" />
-              <p className="text-xs font-bold text-white leading-tight">깊고 부드러운 향</p>
-              <p className="text-[10px] text-gray-300 font-medium">인공 감미료 무첨가</p>
+              <p className="text-xs font-bold text-white leading-tight">순수한 자연의 맛</p>
+              <p className="text-[10px] text-gray-300 font-medium">보존료, 감미료 무첨가</p>
             </div>
           </div>
         </div>
@@ -64,11 +64,11 @@ export default function ProductDetail({ onPurchase, onAddToCart }) {
           {/* Headline */}
           <div className="space-y-3">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black tracking-tight leading-snug">
-              오가피로 프리미엄 고농축액 <br/>
-              <span className="gold-gradient">750ml 에디션</span>
+              오가피로 발효 고농축액 <br/>
+              <span className="gold-gradient">750ml</span>
             </h2>
             <p className="text-sm text-gray-200 font-normal leading-relaxed">
-              청정 자연의 기운을 머금고 자란 국내산 최상급 오가피만을 엄선하여, 조선행도가 장인의 헌신적인 전통 발효 비법으로 완성해 낸 명품 농축액입니다. 오가피 본연의 풍미와 은은한 단맛, 부드러운 목 넘김을 온전히 보존했습니다. 물이나 탄산수, 우유에 희석하여 건강 음료 및 프리미엄 카페 드링크 베이스로 즐기기에 완벽합니다.
+              맑은 공기와 건강한 흙에서 자란 국내산 오가피만을 엄선하여, 조선행도가의 정성스러운 전통 옹기 발효 비법으로 오랜 시간 다려낸 건강 농축액입니다. 오가피 본연의 깊은 풍미와 자연스러운 단맛을 온전히 담아내어 남녀노소 누구나 부드럽게 드실 수 있습니다. 물이나 따뜻한 차, 탄산수에 희석하여 온 가족의 일상 건강 음료로 즐기기에 좋습니다.
             </p>
           </div>
 
@@ -78,7 +78,7 @@ export default function ProductDetail({ onPurchase, onAddToCart }) {
             <div className="space-y-1 text-right">
               <span className="text-3xl sm:text-4xl font-extrabold font-serif text-white">{pricePerUnit.toLocaleString()}</span>
               <span className="text-sm sm:text-lg text-white font-medium ml-1">원</span>
-              <p className="text-[10px] sm:text-xs text-gold font-semibold">※ 주는 이의 품격과 받는 이의 감동을 모두 담은 프리미엄 패키지 포함</p>
+              <p className="text-[10px] sm:text-xs text-gold font-semibold">※ 정성을 담아 안전하게 배송되는 유리병 전용 패키지 포함</p>
             </div>
           </div>
 
@@ -125,7 +125,7 @@ export default function ProductDetail({ onPurchase, onAddToCart }) {
               className="flex-2 h-14 sm:h-16 bg-gold text-black font-bold text-sm sm:text-base rounded-2xl hover:bg-gold/90 hover:-translate-y-0.5 active:translate-y-0 transition-all shadow-xl shadow-gold/10 flex items-center justify-center space-x-3 cursor-pointer"
             >
               <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
-              <span>즉시 간편결제로 주문하기</span>
+              <span>주문하기</span>
             </button>
           </div>
 
@@ -143,7 +143,7 @@ export default function ProductDetail({ onPurchase, onAddToCart }) {
               <div className="px-4 sm:px-5 pb-5 space-y-3.5 text-xs text-gray-200 leading-relaxed border-t border-white/10 pt-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2.5 gap-x-4">
                   <div>
-                    <span className="text-gray-400 font-bold">제품명:</span> 오가피로 750ml (농축액 에디션)
+                    <span className="text-gray-400 font-bold">제품명:</span> 오가피로 750ml (고농축액)
                   </div>
                   <div>
                     <span className="text-gray-400 font-bold">식품유형:</span> 액상차 (일반 식품)

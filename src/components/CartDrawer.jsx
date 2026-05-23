@@ -44,7 +44,7 @@ export default function CartDrawer({
                     </span>
                   )}
                 </div>
-                <h3 className="text-lg font-serif font-bold text-white tracking-wide">귀하의 장바구니</h3>
+                <h3 className="text-lg font-serif font-bold text-white tracking-wide">장바구니</h3>
               </div>
               <button
                 onClick={onClose}
@@ -65,7 +65,7 @@ export default function CartDrawer({
                   <div className="space-y-2">
                     <h4 className="text-sm font-serif font-semibold text-gray-200">장바구니가 비어 있습니다</h4>
                     <p className="text-xs text-gray-400 font-light leading-relaxed max-w-[250px] mx-auto">
-                      조선행도가 장인의 헌신이 담긴 명품 오가피 농축액을 담아 몸과 마음에 기품을 선물해 보십시오.
+                      조선행도가가 정성껏 달인 오가피 농축액을 담아 나와 가족의 건강을 챙겨보세요.
                     </p>
                   </div>
                   <button
@@ -135,7 +135,7 @@ export default function CartDrawer({
                 <div className="space-y-2.5">
                   <div className="flex justify-between text-xs text-gray-400">
                     <span>배송 방식</span>
-                    <span className="text-gold font-medium">우체국 무료 안심 배송</span>
+                    <span className="text-gold font-medium">우체국 무료배송</span>
                   </div>
                   <div className="flex justify-between items-baseline pt-2 border-t border-white/5">
                     <span className="text-sm font-serif font-semibold text-white">최종 결제 금액</span>
@@ -150,7 +150,7 @@ export default function CartDrawer({
                 <div className="p-3.5 rounded-xl bg-white/2 border border-white/5 flex items-start space-x-2 text-[10px] text-gray-400 leading-normal font-light">
                   <ShieldCheck className="w-4 h-4 text-gold shrink-0 mt-0.5" />
                   <span>
-                    조선행도가의 모든 포장 박스는 철저한 항온·항습 관리를 거치며, 파손을 전면 차단하는 특수 에어셀 안전 패키징으로 발송됩니다.
+                    조선행도가의 모든 제품은 친환경 충전재와 전용 안심 박스를 사용하여 안전하고 깨끗하게 발송됩니다.
                   </span>
                 </div>
 
@@ -159,7 +159,7 @@ export default function CartDrawer({
                   onClick={onCheckout}
                   className="w-full h-13 bg-gold text-black font-extrabold text-sm rounded-xl hover:bg-gold/90 transition-all flex items-center justify-center cursor-pointer shadow-lg shadow-gold/5"
                 >
-                  <span>결제 주문서 작성하기</span>
+                  <span>주문하기</span>
                 </button>
               </div>
             )}

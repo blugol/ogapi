@@ -42,7 +42,7 @@ function App() {
           ...prevItems,
           {
             id: 'ogapiro_750ml',
-            name: '오가피로 프리미엄 고농축액 750ml',
+            name: '오가피로 발효 오가피 농축액 750ml',
             price: 45000,
             quantity: quantity,
             image: '/assets/story_2.png'
@@ -127,7 +127,7 @@ function App() {
     <div className="bg-obsidian text-white selection:bg-gold selection:text-black min-h-screen">
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-40 px-4 sm:px-8 py-4 sm:py-6 flex justify-between items-center glass-panel border-b border-white/5">
-        <div className="text-xl sm:text-2xl font-bold font-serif tracking-widest gold-gradient">OGAPIRO</div>
+        <div className="text-xl sm:text-2xl font-bold font-serif tracking-widest gold-gradient">OGAPIRO <span className="text-xs sm:text-sm font-sans tracking-normal ml-1 font-medium text-gold/80">오가피로</span></div>
         <div className="hidden md:flex space-x-12 text-sm uppercase tracking-widest font-medium items-center">
           <a href="#story" className="hover:text-gold transition-colors">조선행도가 이야기</a>
           <a href="#product-detail" className="hover:text-gold transition-colors">제품 소개</a>
@@ -193,7 +193,7 @@ function App() {
             transition={{ duration: 1.5 }}
             className="text-gold uppercase text-sm mb-6 font-semibold"
           >
-            Chosun Hangdo-ga
+            조선행도가
           </motion.p>
           <motion.h1 
             initial={{ opacity: 0, y: 30 }}
@@ -209,8 +209,8 @@ function App() {
             transition={{ duration: 1, delay: 1 }}
             className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-gray-200 font-medium leading-relaxed mb-12"
           >
-            자연이 빚고 시간이 채우다 <br/>
-            첨가물 없이 빚어낸 프리미엄 오가피 발효 농축액의 깊은 숨결을 경험하십시오.
+            나를 아끼는 습관, 오늘은 오가피로 <br/>
+            첨가물 없이 정성껏 다려낸 발효 오가피 농축액으로 온 가족의 건강을 챙겨보세요.
           </motion.p>
           <motion.div
              initial={{ opacity: 0 }}
@@ -218,9 +218,9 @@ function App() {
              transition={{ duration: 1, delay: 1.5 }}
              className="flex flex-col xs:flex-row justify-center items-center gap-4 xs:gap-6"
           >
-            <a href="#product-detail" className="w-full xs:w-auto text-center bg-gold text-black px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-gold/90 transition-all shadow-lg shadow-gold/5">프리미엄 에디션 구매하기</a>
+            <a href="#product-detail" className="w-full xs:w-auto text-center bg-gold text-black px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-gold/90 transition-all shadow-lg shadow-gold/5">오가피 농축액 주문하기</a>
             <a href="#story" className="group flex items-center justify-center space-x-3 text-gold text-xs uppercase tracking-widest py-2">
-              <span>장인 스토리 알아보기</span>
+              <span>스토리 알아보기</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
             </a>
           </motion.div>
@@ -251,9 +251,9 @@ function App() {
             className="space-y-4 md:space-y-8 w-full max-w-md mx-auto md:max-w-none"
           >
             <Award className="text-gold w-10 h-10 md:w-12 md:h-12" />
-            <h2 className="text-3xl md:text-4xl font-serif leading-snug">청정 자연의 기운을 담아 <br className="hidden sm:inline" /> 장인의 손길로 빚어낸 고귀한 한 방울</h2>
+            <h2 className="text-3xl md:text-4xl font-serif leading-snug">청정 자연의 기운을 담아 <br className="hidden sm:inline" /> 오랜 시간과 정성으로 다려낸 건강한 한 방울</h2>
             <p className="text-gray-200 text-sm sm:text-base md:text-lg leading-relaxed font-medium">
-              비옥한 토양과 맑은 공기를 머금고 자란 국내산 최상급 오가피만을 엄선하여 맛과 향의 깊이가 다릅니다. 오랜 기다림과 조선행도가 장인의 섬세한 손길로 자연 본연의 영양 성분과 풍미를 고스란히 농축했습니다.
+              국내산 오가피만을 엄선하여 맛과 향의 깊이가 다릅니다. 오랜 기다림과 조선행도가의 정성스러운 손길로 자연 본연의 영양 성분을 고스란히 농축했습니다.
             </p>
           </motion.div>
         </div>
@@ -292,11 +292,53 @@ function App() {
       <section className="bg-emerald-dark/10 py-24 md:py-32 border-y border-white/10">
         <div className="max-w-4xl mx-auto px-6 text-center space-y-8 md:space-y-12">
           <Heart className="mx-auto text-gold w-10 h-10 md:w-12 md:h-12" />
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif italic leading-snug">"나를 아끼는 기품 있는 습관, 오가피로"</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif italic leading-snug">"나와 가족을 위한 건강한 습관, 오가피로"</h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-200 font-medium leading-relaxed">
-            건강한 몸과 여유로운 마음을 위한 선택. <br/>
-            첨가물 없이 오랜 기다림으로 빚어낸 순수한 오가피의 힘이 당신의 귀한 하루를 정성스레 깨웁니다.
+            건강한 몸과 편안한 하루를 위한 선택. <br/>
+            첨가물 없이 정성을 다해 다려낸 오가피의 기운이 온 가족의 일상을 활기차게 깨웁니다.
           </p>
+        </div>
+      </section>
+
+      {/* Products Preview Section - 제품 라인업 */}
+      <section className="py-16 md:py-20 px-4 sm:px-8 border-t border-white/10">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-gold text-xs uppercase tracking-widest mb-2 font-semibold">오가피로 시리즈</p>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">나를 아끼는 습관, 오늘은 오가피로</h2>
+          </div>
+          <div className="grid grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto">
+            {/* 750ml - 메인 */}
+            <a href="#product-detail" className="group text-center">
+              <div className="aspect-square rounded-2xl overflow-hidden bg-white/5 border border-white/10 mb-3 group-hover:border-gold/30 transition-all">
+                <img src="/assets/story_2.png" alt="오가피로 750ml" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              </div>
+              <p className="text-white font-bold text-sm">오가피로 750ml</p>
+              <p className="text-gold font-serif font-bold text-sm">45,000원</p>
+              <span className="text-[10px] text-gold/60 bg-gold/10 px-2 py-0.5 rounded-full mt-1 inline-block">판매 중</span>
+            </a>
+            {/* 375ml */}
+            <a href="#product-detail" className="group text-center">
+              <div className="aspect-square rounded-2xl overflow-hidden bg-white/5 border border-white/10 mb-3 group-hover:border-gold/30 transition-all">
+                <img src="/assets/story_1.png" alt="오가피로 375ml" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              </div>
+              <p className="text-white font-bold text-sm">오가피로 375ml</p>
+              <p className="text-gold font-serif font-bold text-sm">22,000원</p>
+              <span className="text-[10px] text-gold/60 bg-gold/10 px-2 py-0.5 rounded-full mt-1 inline-block">판매 중</span>
+            </a>
+            {/* 500ml - 예정 */}
+            <div className="group text-center opacity-60">
+              <div className="aspect-square rounded-2xl overflow-hidden bg-white/3 border border-white/5 mb-3 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-2xl mb-1">🌿</div>
+                  <p className="text-xs text-gray-500">준비 중</p>
+                </div>
+              </div>
+              <p className="text-gray-400 font-bold text-sm">오가피로 500ml</p>
+              <p className="text-gray-500 font-serif text-sm">35,000원</p>
+              <span className="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-full mt-1 inline-block">출시 예정</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -389,9 +431,9 @@ function App() {
                 <span className="inline-block bg-gold/10 text-gold px-3.5 py-1.5 rounded-full text-xs font-bold">
                   주문 완료
                 </span>
-                <h3 className="text-2xl font-serif font-bold leading-tight">귀하의 고귀한 주문이 <br/>완벽히 접수되었습니다</h3>
+                <h3 className="text-2xl font-serif font-bold leading-tight">주문이 정상적으로 <br/>접수되었습니다</h3>
                 <p className="text-xs text-gray-200 font-medium leading-relaxed">
-                  전통을 품은 정성 가득한 오가피 농축액을 귀하의 소중한 처소로 신속하고 안전하게 전달해 드리겠습니다.
+                  정성 가득 담은 오가피 농축액을 신속하고 안전하게 배송해 드리겠습니다.
                 </p>
               </div>
 
@@ -438,43 +480,67 @@ function App() {
       <InquiryForm />
 
       {/* Footer */}
-      <footer className="bg-black pt-24 pb-12 px-6 sm:px-8 border-t border-white/10">
+      <footer className="bg-black pt-16 pb-10 px-6 sm:px-8 border-t border-white/10">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 md:gap-12 mb-16 md:mb-20">
-            <div className="col-span-2">
-              <div className="text-2xl sm:text-3xl font-bold font-serif gold-gradient mb-6 md:mb-8 tracking-widest uppercase">OGAPIRO</div>
-              <p className="max-w-md text-gray-200 font-medium text-xs sm:text-sm leading-relaxed">
-                조선행도가는 전통의 방식을 현대적인 감각으로 재해석하여, 
-                누구에게나 고귀한 경험을 선사하는 프리미엄 농축액을 빚습니다.
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {/* 브랜드 */}
+            <div className="col-span-1">
+              <div className="text-xl sm:text-2xl font-bold font-serif gold-gradient mb-4 tracking-widest uppercase">OGAPIRO <span className="text-xs font-sans tracking-normal ml-1 font-medium text-gold/80">오가피로</span></div>
+              <p className="text-gray-300 font-medium text-xs leading-relaxed mb-4">
+                조선행도가는 전통 방식을 지키며, 가족의 건강을 위해 정성을 다해 오가피를 다립니다.
               </p>
+              {/* SNS */}
+              <div className="flex space-x-3">
+                <a href="https://instagram.com/ogapi.ai" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gold transition-colors text-xs">인스타그램</a>
+                <a href="https://www.youtube.com/@오가피로" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gold transition-colors text-xs">유튜브</a>
+                <a href="https://blog.naver.com/ogapiro_ai" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gold transition-colors text-xs">블로그</a>
+                <a href="https://pf.kakao.com/_btxbxhX" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gold transition-colors text-xs">카카오</a>
+              </div>
             </div>
+
+            {/* 고객 안내 */}
             <div>
-              <h4 className="text-xs sm:text-sm font-bold uppercase tracking-widest mb-6 md:mb-8 text-gold">Contact</h4>
-              <ul className="space-y-3 sm:space-y-4 text-gray-200 font-bold text-xs sm:text-sm">
-                <li className="flex items-center space-x-3">
+              <h4 className="text-xs sm:text-sm font-bold tracking-widest mb-4 text-gold">고객 안내</h4>
+              <ul className="space-y-2 text-gray-300 text-xs sm:text-sm">
+                <li className="flex items-center space-x-2">
                   <Phone className="w-4 h-4 flex-shrink-0 text-gold" />
-                  <span>041-633-2676</span>
+                  <span className="font-bold">041-633-2676</span>
                 </li>
-                <li className="flex items-start space-x-3">
+                <li className="flex items-start space-x-2">
                   <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5 text-gold" />
                   <span>충남 홍성군 구항면 거북로 386-35</span>
                 </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xs sm:text-sm font-bold uppercase tracking-widest mb-6 md:mb-8 text-gold">Online</h4>
-              <ul className="space-y-3 sm:space-y-4 text-gray-200 font-bold text-xs sm:text-sm">
-                <li className="flex items-center space-x-3">
+                <li className="text-gray-400 pl-6">평일/주말 09:00~18:00 (일요일 휴무)</li>
+                <li className="flex items-center space-x-2">
                   <Globe className="w-4 h-4 flex-shrink-0 text-gold" />
                   <a href="http://www.ogapiro.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">www.ogapiro.com</a>
                 </li>
+                <li className="text-gray-400 pl-6">이메일: kellyou@empas.com</li>
               </ul>
             </div>
+
+            {/* 무통장 / 사업자 */}
+            <div>
+              <h4 className="text-xs sm:text-sm font-bold tracking-widest mb-4 text-gold">무통장 입금</h4>
+              <div className="p-3.5 rounded-xl bg-white/3 border border-white/10 text-xs space-y-1.5 text-gray-300">
+                <p className="font-bold text-white">농협회원조합</p>
+                <p className="font-mono">351-1364-2054-03</p>
+                <p className="text-gray-400">예금주: 농업회사법인 조선행도가 주식회사</p>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col md:flex-row justify-between items-center pt-8 md:pt-12 border-t border-white/10 text-[10px] text-gray-400 uppercase tracking-[0.2em] gap-4">
+
+          {/* 사업자 정보 */}
+          <div className="border-t border-white/10 pt-6 text-[10px] text-gray-500 space-y-1 leading-relaxed">
+            <p>상호명: 농업회사법인 조선행도가 주식회사 | 대표자명: 유은경 | 사업자 등록번호: 390-88-03534</p>
+            <p>사업장 주소: 32215 충청남도 홍성군 구항면 거북로 386-35 1층</p>
+            <p>통신판매업 신고번호: 제 2026-충남홍성-0052호 | 지역특산주(과실주) 통신판매업 신고번호: 제 2026-충남아산-0096호</p>
+          </div>
+
+          <div className="flex flex-col md:flex-row justify-between items-center pt-5 border-t border-white/5 mt-5 text-[10px] text-gray-500 gap-3">
             <p>© 2026 조선행도가 All rights reserved.</p>
-            <div className="space-x-6 sm:space-x-8">
-              <span onClick={() => setIsAdminActive(true)} className="cursor-pointer hover:text-gold transition-colors text-gold/60 font-semibold uppercase tracking-widest">[어드민 주문관리]</span>
+            <div className="space-x-4 sm:space-x-6">
+              <span onClick={() => setIsAdminActive(true)} className="cursor-pointer hover:text-gold transition-colors text-gold/50 font-semibold">[어드민 주문관리]</span>
               <span className="cursor-pointer hover:text-white transition-colors">개인정보 처리방침</span>
               <span className="cursor-pointer hover:text-white transition-colors">이용약관</span>
             </div>
