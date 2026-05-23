@@ -128,20 +128,20 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 md:p-10 rounded-3xl bg-[#131313] border border-white/5 shadow-xl">
+    <div className="w-full max-w-2xl mx-auto p-5 sm:p-8 md:p-10 rounded-3xl bg-[#131313] border border-white/5 shadow-2xl">
       {/* Back Header */}
       <button 
         onClick={onBack}
-        className="flex items-center space-x-2 text-xs text-gray-400 hover:text-white mb-8 transition-colors"
+        className="flex items-center space-x-2 text-xs text-gray-400 hover:text-white mb-6 md:mb-8 transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>상품 정보로 돌아가기</span>
       </button>
 
-      <h3 className="text-2xl font-serif font-bold mb-6">주문서 작성 및 결제</h3>
+      <h3 className="text-xl sm:text-2xl font-serif font-bold mb-5">주문서 작성 및 결제</h3>
 
       {/* Order Brief */}
-      <div className="p-5 rounded-2xl bg-white/2 border border-white/5 mb-8 space-y-3">
+      <div className="p-4 sm:p-5 rounded-2xl bg-white/2 border border-white/5 mb-6 md:mb-8 space-y-3">
         <div className="flex justify-between text-xs text-gray-400">
           <span>주문 상품</span>
           <span className="font-medium text-white">오가피로 Obsidian 365 x {quantity}병</span>
@@ -152,22 +152,22 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
         </div>
         <div className="border-t border-white/5 pt-3 flex justify-between text-sm font-semibold">
           <span>총 결제금액</span>
-          <span className="text-gold font-serif text-lg">{totalAmount.toLocaleString()}원</span>
+          <span className="text-gold font-serif text-base sm:text-lg">{totalAmount.toLocaleString()}원</span>
         </div>
       </div>
 
-      <form onSubmit={handlePay} className="space-y-6">
+      <form onSubmit={handlePay} className="space-y-5 md:space-y-6">
         {/* Social Address Autocomplete selector */}
         {deliveryAddresses.length > 0 && (
           <div className="space-y-2">
-            <label className="text-[11px] text-gold uppercase tracking-widest font-semibold flex items-center space-x-1">
+            <label className="text-[10px] md:text-[11px] text-gold uppercase tracking-widest font-semibold flex items-center space-x-1.5">
               <MapPin className="w-3.5 h-3.5" />
               <span>카카오 싱크 배송지 불러오기</span>
             </label>
             <select
               value={selectedAddressId}
               onChange={(e) => setSelectedAddressId(e.target.value)}
-              className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-gold/50 cursor-pointer"
+              className="w-full h-11 px-4 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 cursor-pointer transition-all"
             >
               <option value="" className="bg-[#131313]">-- 직접 입력 (새 주소) --</option>
               {deliveryAddresses.map(addr => (
@@ -183,7 +183,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
         <div className="space-y-4">
           <h4 className="text-xs uppercase tracking-widest text-gray-400 font-bold border-b border-white/5 pb-2">배송 정보</h4>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
               <label className="text-[10px] text-gray-500 font-medium">수령인 성함</label>
               <input
@@ -192,7 +192,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
                 value={formData.recipient}
                 onChange={handleChange}
                 required
-                className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-gold/50"
+                className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all"
               />
             </div>
             <div className="space-y-1">
@@ -204,7 +204,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
                 onChange={handleChange}
                 required
                 placeholder="010-0000-0000"
-                className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-gold/50"
+                className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all"
               />
             </div>
           </div>
@@ -217,7 +217,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
               value={formData.zipcode}
               onChange={handleChange}
               placeholder="우편번호 (선택)"
-              className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-gold/50"
+              className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all"
             />
           </div>
 
@@ -230,7 +230,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
               onChange={handleChange}
               required
               placeholder="예) 서울시 강남구 테헤란로 123"
-              className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-gold/50"
+              className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all"
             />
           </div>
 
@@ -242,20 +242,20 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
               value={formData.detailAddress}
               onChange={handleChange}
               placeholder="예) 101동 1203호"
-              className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-gold/50"
+              className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all"
             />
           </div>
         </div>
 
         {/* Payment Methods */}
-        <div className="space-y-4 pt-4">
+        <div className="space-y-4 pt-2">
           <h4 className="text-xs uppercase tracking-widest text-gray-400 font-bold border-b border-white/5 pb-2">결제 수단 선택</h4>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             {/* KakaoPay */}
-            <label className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${
+            <label className={`flex items-center justify-between p-3 sm:p-4 rounded-xl border cursor-pointer transition-all ${
               formData.paymentMethod === 'kakaopay' 
-                ? 'bg-gold/5 border-gold text-gold' 
+                ? 'bg-gold/5 border-gold text-gold shadow-lg shadow-gold/5' 
                 : 'bg-white/2 border-white/10 text-gray-400 hover:border-white/20'
             }`}>
               <div className="flex items-center space-x-2">
@@ -267,16 +267,16 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
                   onChange={handleChange}
                   className="hidden"
                 />
-                <CreditCard className="w-4 h-4" />
+                <CreditCard className="w-4 h-4 flex-shrink-0" />
                 <span className="text-xs font-semibold">카카오페이</span>
               </div>
-              <span className="text-[9px] bg-yellow-400/10 text-yellow-400 px-2 py-0.5 rounded font-bold">간편결제</span>
+              <span className="text-[8px] sm:text-[9px] bg-yellow-400/10 text-yellow-400 px-1.5 py-0.5 rounded font-bold flex-shrink-0 hidden xs:inline-block">간편결제</span>
             </label>
 
             {/* TossPay */}
-            <label className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${
+            <label className={`flex items-center justify-between p-3 sm:p-4 rounded-xl border cursor-pointer transition-all ${
               formData.paymentMethod === 'tosspay' 
-                ? 'bg-gold/5 border-gold text-gold' 
+                ? 'bg-gold/5 border-gold text-gold shadow-lg shadow-gold/5' 
                 : 'bg-white/2 border-white/10 text-gray-400 hover:border-white/20'
             }`}>
               <div className="flex items-center space-x-2">
@@ -288,17 +288,17 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
                   onChange={handleChange}
                   className="hidden"
                 />
-                <CreditCard className="w-4 h-4" />
+                <CreditCard className="w-4 h-4 flex-shrink-0" />
                 <span className="text-xs font-semibold">토스페이</span>
               </div>
-              <span className="text-[9px] bg-blue-400/10 text-blue-400 px-2 py-0.5 rounded font-bold">간편결제</span>
+              <span className="text-[8px] sm:text-[9px] bg-blue-400/10 text-blue-400 px-1.5 py-0.5 rounded font-bold flex-shrink-0 hidden xs:inline-block">간편결제</span>
             </label>
           </div>
         </div>
 
         {/* Security / PG sandboxed notice */}
         <div className="p-4 rounded-2xl bg-white/2 border border-white/5 flex items-start space-x-3 text-[10px] text-gray-500 leading-relaxed">
-          <ShieldAlert className="w-5 h-5 text-gold flex-shrink-0" />
+          <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-gold flex-shrink-0 mt-0.5" />
           <div>
             🔒 **안전 거래 보증 및 샌드박스 알림**<br/>
             현재 시스템은 안전한 가맹점 결제 테스트(Sandbox) 환경에서 작동하므로 안심하고 진행하실 수 있습니다. 테스트 모드로 실제 청구가 발생하지 않거나 테스트 결제 완료 후 즉시 자동 전액 취소 처리됩니다.
@@ -309,7 +309,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
         <button
           type="submit"
           disabled={loading}
-          className="w-full h-14 bg-gold text-black font-bold text-sm rounded-xl hover:bg-gold/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:-translate-y-0 disabled:cursor-not-allowed transition-all flex items-center justify-center space-x-2 cursor-pointer"
+          className="w-full h-14 bg-gold text-black font-bold text-sm rounded-xl hover:bg-gold/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:-translate-y-0 disabled:cursor-not-allowed transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-lg shadow-gold/5"
         >
           {loading ? (
             <>
