@@ -6,7 +6,8 @@ export default function ProductDetail({ onPurchase }) {
   const [quantity, setQuantity] = useState(1);
   const [showLegalInfo, setShowLegalInfo] = useState(false);
 
-  const pricePerUnit = 120000; // 120,000 KRW
+  // 실제 사이트 기준 가격 반영 (오가피로 프리미엄 에디션: 45,000원)
+  const pricePerUnit = 45000; 
   const totalAmount = pricePerUnit * quantity;
 
   return (
@@ -23,12 +24,12 @@ export default function ProductDetail({ onPurchase }) {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
             <img 
               src="/assets/story_2.png" 
-              alt="오가피로 프리미엄 농축액" 
+              alt="오가피로 프리미엄 발효 농축액" 
               className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
             />
             {/* Premium Badge */}
             <span className="absolute top-4 left-4 md:top-6 md:left-6 z-20 bg-gold/90 text-black px-3 py-1 text-[10px] md:text-[11px] font-bold tracking-widest rounded-full uppercase">
-              PREMIUM EDITION
+              PREMIUM CONCENTRATE
             </span>
           </motion.div>
 
@@ -36,18 +37,18 @@ export default function ProductDetail({ onPurchase }) {
           <div className="grid grid-cols-3 gap-2.5 sm:gap-4 text-center">
             <div className="p-3 sm:p-4 rounded-2xl bg-white/3 border border-white/5 flex flex-col justify-center space-y-1.5 hover:bg-white/5 transition-all">
               <ShieldCheck className="w-5 h-5 md:w-6 md:h-6 text-gold mx-auto" />
-              <p className="text-[10px] sm:text-[11px] font-semibold text-gray-200 leading-tight">무첨가물 원칙</p>
-              <p className="text-[8px] sm:text-[9px] text-gray-500">100% 천연 오가피</p>
+              <p className="text-[10px] sm:text-[11px] font-semibold text-gray-200 leading-tight">최상급 원료</p>
+              <p className="text-[8px] sm:text-[9px] text-gray-500">100% 국내산 오가피</p>
             </div>
             <div className="p-3 sm:p-4 rounded-2xl bg-white/3 border border-white/5 flex flex-col justify-center space-y-1.5 hover:bg-white/5 transition-all">
               <Calendar className="w-5 h-5 md:w-6 md:h-6 text-gold mx-auto" />
-              <p className="text-[10px] sm:text-[11px] font-semibold text-gray-200 leading-tight">전통 천연발효</p>
-              <p className="text-[8px] sm:text-[9px] text-gray-500">365일 저온 숙성</p>
+              <p className="text-[10px] sm:text-[11px] font-semibold text-gray-200 leading-tight">장인의 손길</p>
+              <p className="text-[8px] sm:text-[9px] text-gray-500">전통 천연발효 숙성</p>
             </div>
             <div className="p-3 sm:p-4 rounded-2xl bg-white/3 border border-white/5 flex flex-col justify-center space-y-1.5 hover:bg-white/5 transition-all">
               <FileText className="w-5 h-5 md:w-6 md:h-6 text-gold mx-auto" />
-              <p className="text-[10px] sm:text-[11px] font-semibold text-gray-200 leading-tight">식약처 규정 준수</p>
-              <p className="text-[8px] sm:text-[9px] text-gray-500">정밀 품질검증 필</p>
+              <p className="text-[10px] sm:text-[11px] font-semibold text-gray-200 leading-tight">깊고 부드러운 향</p>
+              <p className="text-[8px] sm:text-[9px] text-gray-500">인공 감미료 무첨가</p>
             </div>
           </div>
         </div>
@@ -64,10 +65,10 @@ export default function ProductDetail({ onPurchase }) {
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-black tracking-tight leading-snug">
               오가피로 프리미엄 고농축액 <br/>
-              <span className="gold-gradient">Obsidian 365 에디션</span>
+              <span className="gold-gradient">750ml 에디션</span>
             </h2>
             <p className="text-xs sm:text-sm text-gray-400 font-light leading-relaxed">
-              조선행도가의 철저한 위생 관리와 자연 저온 숙성을 거쳐 단 1%의 화학 보존료나 인공 감미료 없이 빚어낸 순수한 명품 오가피 농축액입니다. 카페 콜라보 및 홈 메이드 에너지 드링크 베이스로 최적화되었습니다.
+              청정 자연의 기운을 머금고 자란 국내산 최상급 오가피만을 엄선하여, 조선행도가 장인의 헌신적인 전통 발효 비법으로 완성해 낸 명품 농축액입니다. 오가피 본연의 풍미와 은은한 단맛, 부드러운 목 넘김을 온전히 보존했습니다. 물이나 탄산수, 우유에 희석하여 건강 음료 및 프리미엄 카페 드링크 베이스로 즐기기에 완벽합니다.
             </p>
           </div>
 
@@ -77,7 +78,7 @@ export default function ProductDetail({ onPurchase }) {
             <div className="space-y-1 text-right">
               <span className="text-2xl sm:text-3xl font-bold font-serif text-white">{pricePerUnit.toLocaleString()}</span>
               <span className="text-sm sm:text-lg text-gray-400 font-light ml-1">원</span>
-              <p className="text-[9px] sm:text-[10px] text-gold font-medium">※ 카페 제휴 및 단체 주문 시 별도 할인 혜택 제공</p>
+              <p className="text-[9px] sm:text-[10px] text-gold font-medium">※ 주는 이의 품격과 받는 이의 감동을 모두 담은 프리미엄 패키지 포함</p>
             </div>
           </div>
 
@@ -133,7 +134,7 @@ export default function ProductDetail({ onPurchase }) {
               <div className="px-4 sm:px-5 pb-4 sm:pb-5 space-y-3 text-[10px] text-gray-500 leading-relaxed border-t border-white/5 pt-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4">
                   <div>
-                    <span className="text-gray-400 font-medium">제품명:</span> 오가피로 Obsidian 365
+                    <span className="text-gray-400 font-medium">제품명:</span> 오가피로 750ml (농축액 에디션)
                   </div>
                   <div>
                     <span className="text-gray-400 font-medium">식품유형:</span> 액상차 (일반 식품)
@@ -158,7 +159,7 @@ export default function ProductDetail({ onPurchase }) {
                   </div>
                 </div>
                 <div className="border-t border-white/5 pt-3 text-[9px] leading-relaxed">
-                  🚨 **소비자 주의사항**: 본 제품은 천연 원료만을 사용하여 침전물이 생길 수 있으나 흔들어 드시면 안심하고 섭취하실 수 있습니다. 본 제품은 질병의 예방 및 치료를 위한 의약품이 아닌 일반 식품(액상차)입니다.
+                  🚨 **소비자 주의사항**: 본 제품은 천연 원료만을 사용하여 침전물이 생길 수 있으나 흔들어 드시면 안심하고 섭취하실 수 있습니다. 본 제품은 주류가 아니며, 질병의 예방 및 치료를 위한 의약품이 아닌 일반 식품(액상차)입니다.
                 </div>
               </div>
             )}

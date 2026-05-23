@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Phone, MapPin, Globe, ArrowRight, Award, Clock, Heart, GlassWater, LogOut, User, CheckCircle2, Sparkles } from 'lucide-react';
+import { Phone, MapPin, Globe, ArrowRight, Award, Clock, Heart, Sparkles, LogOut, User, CheckCircle2 } from 'lucide-react';
 import InquiryForm from './components/InquiryForm';
 import ProductDetail from './components/ProductDetail';
 import LoginModal from './components/LoginModal';
@@ -108,7 +108,7 @@ function App() {
             initial={{ opacity: 0, letterSpacing: "0.2em" }}
             animate={{ opacity: 1, letterSpacing: "0.5em" }}
             transition={{ duration: 1.5 }}
-            className="text-gold uppercase text-sm mb-6"
+            className="text-gold uppercase text-sm mb-6 font-semibold"
           >
             Chosun Hangdo-ga
           </motion.p>
@@ -126,8 +126,8 @@ function App() {
             transition={{ duration: 1, delay: 1 }}
             className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-gray-400 font-light leading-relaxed mb-12"
           >
-            보존료 없이 빚은 프리미엄 오가피 농축액 <br/>
-            세월로 빚어낸 오가피의 깊은 숨결을 경험하십시오.
+            자연이 빚고 시간이 채우다 <br/>
+            첨가물 없이 빚어낸 프리미엄 오가피 발효 농축액의 깊은 숨결을 경험하십시오.
           </motion.p>
           <motion.div
              initial={{ opacity: 0 }}
@@ -135,7 +135,7 @@ function App() {
              transition={{ duration: 1, delay: 1.5 }}
              className="flex flex-col xs:flex-row justify-center items-center gap-4 xs:gap-6"
           >
-            <a href="#product-detail" className="w-full xs:w-auto text-center bg-gold text-black px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-gold/90 transition-all">Order Premium Bottle</a>
+            <a href="#product-detail" className="w-full xs:w-auto text-center bg-gold text-black px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-gold/90 transition-all shadow-lg shadow-gold/5">Order Premium Bottle</a>
             <a href="#story" className="group flex items-center justify-center space-x-3 text-gold text-xs uppercase tracking-widest py-2">
               <span>Explore the Story</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
@@ -151,13 +151,13 @@ function App() {
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="relative aspect-[4/5] rounded-2xl overflow-hidden premium-border w-full max-w-md mx-auto md:max-w-none"
+            className="relative aspect-[4/5] rounded-2xl overflow-hidden premium-border w-full max-w-md mx-auto md:max-w-none shadow-2xl"
           >
             <img src="/assets/story_1.png" alt="Raw Materials" className="w-full h-full object-cover transition-transform duration-1000 hover:scale-110" />
             <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent"></div>
             <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
               <span className="text-gold text-3xl md:text-4xl font-serif mb-1 block">01</span>
-              <h3 className="text-2xl md:text-3xl font-bold">원료의 가치</h3>
+              <h3 className="text-2xl md:text-3xl font-bold">전통과 현대의 만남</h3>
             </div>
           </motion.div>
           
@@ -168,10 +168,9 @@ function App() {
             className="space-y-4 md:space-y-8 w-full max-w-md mx-auto md:max-w-none"
           >
             <Award className="text-gold w-10 h-10 md:w-12 md:h-12" />
-            <h2 className="text-3xl md:text-4xl font-serif leading-snug">품질 좋은 오가피를 엄선하여 <br className="hidden sm:inline" /> 완성된 고귀한 한 방울</h2>
+            <h2 className="text-3xl md:text-4xl font-serif leading-snug">청정 자연의 기운을 담아 <br className="hidden sm:inline" /> 장인의 손길로 빚어낸 고귀한 한 방울</h2>
             <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed font-light">
-              오랜 세월 귀하게 여겨온 원재료의 깊은 가치를 담았습니다. 
-              최고급 오가피 열매만을 수확하여 자연 그대로의 성분을 보존하기 위해 정성을 다합니다.
+              비옥한 토양과 맑은 공기를 머금고 자란 국내산 최상급 오가피만을 엄선하여 맛과 향의 깊이가 다릅니다. 오랜 기다림과 조선행도가 장인의 섬세한 손길로 자연 본연의 영양 성분과 풍미를 고스란히 농축했습니다.
             </p>
           </motion.div>
         </div>
@@ -184,10 +183,9 @@ function App() {
             className="space-y-4 md:space-y-8 w-full max-w-md mx-auto md:max-w-none md:order-1"
           >
             <Clock className="text-gold w-10 h-10 md:w-12 md:h-12" />
-            <h2 className="text-3xl md:text-4xl font-serif leading-snug">기다림의 미학, <br className="hidden sm:inline" /> 발효와 숙성의 시간</h2>
+            <h2 className="text-3xl md:text-4xl font-serif leading-snug">기다림의 미학, <br className="hidden sm:inline" /> 자연 발효와 저온 숙성</h2>
             <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed font-light">
-              천천히 숙성되는 전통 발효 과정을 통해 인위적인 가공 없이도 
-              부드럽고 깊은 맛을 완성합니다. 시간이 빚어낸 완벽한 균형을 느껴보세요.
+              천천히 숙성되는 전통 발효 과정을 통해 인위적인 가공 없이도 깊고 부드러운 맛을 완성합니다. 오가피 본연의 깊은 향과 은은한 단맛, 부드러운 목 넘김이 조화롭게 어우러져 깊은 여운을 남깁니다.
             </p>
           </motion.div>
           
@@ -195,13 +193,13 @@ function App() {
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="relative aspect-[4/5] rounded-2xl overflow-hidden premium-border w-full max-w-md mx-auto md:max-w-none md:order-2"
+            className="relative aspect-[4/5] rounded-2xl overflow-hidden premium-border w-full max-w-md mx-auto md:max-w-none md:order-2 shadow-2xl"
           >
             <img src="/assets/story_2.png" alt="Premium Gift Set" className="w-full h-full object-cover transition-transform duration-1000 hover:scale-110" />
             <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent"></div>
             <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
               <span className="text-gold text-3xl md:text-4xl font-serif mb-1 block">02</span>
-              <h3 className="text-2xl md:text-3xl font-bold">발효의 시간</h3>
+              <h3 className="text-2xl md:text-3xl font-bold">시간이 완성한 이야기</h3>
             </div>
           </motion.div>
         </div>
@@ -211,10 +209,10 @@ function App() {
       <section className="bg-emerald-dark/10 py-24 md:py-32 border-y border-white/5">
         <div className="max-w-4xl mx-auto px-6 text-center space-y-8 md:space-y-12">
           <Heart className="mx-auto text-gold w-10 h-10 md:w-12 md:h-12" />
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif italic leading-snug">"나를 아끼는 습관, 오늘은 오가피로"</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif italic leading-snug">"나를 아끼는 기품 있는 습관, 오가피로"</h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-400 font-light leading-relaxed">
-            건강한 몸과 마음을 위한 선택. <br/>
-            첨가물 없이 빚어낸 순수한 오가피의 힘이 당신의 하루를 깨웁니다.
+            건강한 몸과 여유로운 마음을 위한 선택. <br/>
+            첨가물 없이 오랜 기다림으로 빚어낸 순수한 오가피의 힘이 당신의 귀한 하루를 정성스레 깨웁니다.
           </p>
         </div>
       </section>
