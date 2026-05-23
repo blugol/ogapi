@@ -37,9 +37,9 @@ export default function LoginModal({ isOpen, onClose, onLoginKakao, onLoginGoogl
 
             {/* Header */}
             <div className="text-center mt-3 sm:mt-4 mb-6 sm:mb-8 space-y-3">
-              <span className="inline-flex items-center space-x-1 bg-gold/10 text-gold px-3 py-1 rounded-full text-xs tracking-widest font-semibold uppercase">
+              <span className="inline-flex items-center space-x-1 bg-gold/10 text-gold px-3.5 py-1.5 rounded-full text-xs font-bold">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>1-Second Easy Login</span>
+                <span>1초 간편 로그인</span>
               </span>
               <h3 className="text-2xl font-serif font-bold tracking-tight text-white">조선행도가 로그인</h3>
               <p className="text-xs text-gray-200 max-w-[300px] mx-auto leading-relaxed font-medium">

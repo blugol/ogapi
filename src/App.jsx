@@ -129,9 +129,9 @@ function App() {
       <nav className="fixed top-0 w-full z-40 px-4 sm:px-8 py-4 sm:py-6 flex justify-between items-center glass-panel border-b border-white/5">
         <div className="text-xl sm:text-2xl font-bold font-serif tracking-widest gold-gradient">OGAPIRO</div>
         <div className="hidden md:flex space-x-12 text-sm uppercase tracking-widest font-medium items-center">
-          <a href="#story" className="hover:text-gold transition-colors">Story</a>
-          <a href="#product-detail" className="hover:text-gold transition-colors">Product</a>
-          <a href="#inquiry" className="hover:text-gold transition-colors">Contact</a>
+          <a href="#story" className="hover:text-gold transition-colors">조선행도가 이야기</a>
+          <a href="#product-detail" className="hover:text-gold transition-colors">제품 소개</a>
+          <a href="#inquiry" className="hover:text-gold transition-colors">고객 문의</a>
         </div>
         
         {/* Social Profile, Cart & CTA */}
@@ -151,27 +151,27 @@ function App() {
 
           {isLoggedIn ? (
             <div className="flex items-center space-x-3 sm:space-x-4 text-xs">
-              <span className="flex items-center space-x-1 bg-white/5 border border-white/10 px-2.5 sm:px-3 py-1.5 rounded-full text-gray-300">
+              <span className="flex items-center space-x-1 bg-white/5 border border-white/10 px-2.5 sm:px-3 py-1.5 rounded-full text-gray-300 font-medium">
                 <User className="w-3.5 h-3.5 text-gold" />
-                <span className="font-semibold text-[10px] hidden sm:inline">{user.user_metadata?.full_name || user.email}님</span>
+                <span className="font-bold text-xs hidden sm:inline">{user.user_metadata?.full_name || user.email}님</span>
               </span>
               <button 
                 onClick={logout}
-                className="text-gray-400 hover:text-white transition-colors flex items-center space-x-1 uppercase tracking-widest text-[9px] font-bold cursor-pointer"
+                className="text-gray-400 hover:text-white transition-colors flex items-center space-x-1 text-xs font-bold cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span className="hidden xs:inline">Logout</span>
+                <span className="hidden xs:inline">로그아웃</span>
               </button>
             </div>
           ) : (
             <button 
               onClick={() => setIsLoginModalOpen(true)}
-              className="text-xs uppercase tracking-widest text-gray-300 hover:text-white transition-colors cursor-pointer"
+              className="text-xs text-gray-300 hover:text-white transition-colors cursor-pointer font-bold"
             >
-              LOGIN
+              로그인
             </button>
           )}
-          <a href="#product-detail" className="border border-gold/30 px-4 sm:px-6 py-2 rounded-full text-[10px] sm:text-xs hover:bg-gold hover:text-black transition-all uppercase tracking-widest font-semibold">BUY NOW</a>
+          <a href="#product-detail" className="border border-gold/30 px-4 sm:px-6 py-2 rounded-full text-xs hover:bg-gold hover:text-black transition-all font-bold">구매하기</a>
         </div>
       </nav>
 
@@ -218,9 +218,9 @@ function App() {
              transition={{ duration: 1, delay: 1.5 }}
              className="flex flex-col xs:flex-row justify-center items-center gap-4 xs:gap-6"
           >
-            <a href="#product-detail" className="w-full xs:w-auto text-center bg-gold text-black px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-gold/90 transition-all shadow-lg shadow-gold/5">Order Premium Bottle</a>
+            <a href="#product-detail" className="w-full xs:w-auto text-center bg-gold text-black px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-gold/90 transition-all shadow-lg shadow-gold/5">프리미엄 에디션 구매하기</a>
             <a href="#story" className="group flex items-center justify-center space-x-3 text-gold text-xs uppercase tracking-widest py-2">
-              <span>Explore the Story</span>
+              <span>장인 스토리 알아보기</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
             </a>
           </motion.div>
@@ -386,8 +386,8 @@ function App() {
             >
               <CheckCircle2 className="w-12 h-12 sm:w-16 sm:h-16 text-gold mx-auto" />
               <div className="space-y-2">
-                <span className="inline-block bg-gold/10 text-gold px-3.5 py-1.5 rounded-full text-xs tracking-widest font-semibold uppercase">
-                  Order Completed
+                <span className="inline-block bg-gold/10 text-gold px-3.5 py-1.5 rounded-full text-xs font-bold">
+                  주문 완료
                 </span>
                 <h3 className="text-2xl font-serif font-bold leading-tight">귀하의 고귀한 주문이 <br/>완벽히 접수되었습니다</h3>
                 <p className="text-xs text-gray-200 font-medium leading-relaxed">
@@ -415,7 +415,7 @@ function App() {
                 </div>
                 <div className="flex justify-between">
                   <span>결제 수단:</span>
-                  <span className="text-gold font-bold uppercase">{receipt.method} 간편결제</span>
+                  <span className="text-gold font-bold">{receipt.method === 'kakaopay' ? '카카오페이' : '토스페이'} 간편결제</span>
                 </div>
                 <div className="border-t border-white/10 pt-2 flex justify-between font-black text-sm">
                   <span className="text-gold">최종 결제액:</span>
@@ -475,8 +475,8 @@ function App() {
             <p>© 2026 조선행도가 All rights reserved.</p>
             <div className="space-x-6 sm:space-x-8">
               <span onClick={() => setIsAdminActive(true)} className="cursor-pointer hover:text-gold transition-colors text-gold/60 font-semibold uppercase tracking-widest">[어드민 주문관리]</span>
-              <span className="cursor-pointer hover:text-white transition-colors">Privacy Policy</span>
-              <span className="cursor-pointer hover:text-white transition-colors">Terms of Service</span>
+              <span className="cursor-pointer hover:text-white transition-colors">개인정보 처리방침</span>
+              <span className="cursor-pointer hover:text-white transition-colors">이용약관</span>
             </div>
           </div>
         </div>

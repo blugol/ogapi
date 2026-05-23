@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CreditCard, CheckCircle, ShieldAlert, ArrowLeft, Loader2, MapPin, Sparkles, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Loader2, MapPin, Sparkles, MessageCircle } from 'lucide-react';
 
 export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPaymentSuccess, onKakaoLogin, onLogout, cartItems = [] }) {
   const [selectedAddressId, setSelectedAddressId] = useState('');
@@ -297,67 +297,55 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
 
         {/* Payment Methods */}
         <div className="space-y-4 pt-2">
-          <h4 className="text-xs uppercase tracking-widest text-gray-400 font-bold border-b border-white/5 pb-2">결제 수단 선택</h4>
+          <h4 className="text-xs text-gray-300 font-bold">결제 수단 선택</h4>
           
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             {/* KakaoPay */}
-            <label className={`flex items-center justify-between p-3 sm:p-4 rounded-xl border cursor-pointer transition-all ${
+            <label className={`flex items-center justify-center p-4 rounded-xl border cursor-pointer transition-all ${
               formData.paymentMethod === 'kakaopay' 
-                ? 'bg-gold/5 border-gold text-gold shadow-lg shadow-gold/5' 
-                : 'bg-white/2 border-white/10 text-gray-400 hover:border-white/20'
+                ? 'bg-gold/5 border-gold text-gold shadow-md' 
+                : 'bg-white/2 border-white/10 text-gray-300 hover:border-white/20'
             }`}>
-              <div className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="kakaopay"
-                  checked={formData.paymentMethod === 'kakaopay'}
-                  onChange={handleChange}
-                  className="hidden"
-                />
-                <CreditCard className="w-4 h-4 flex-shrink-0" />
-                <span className="text-xs font-semibold">카카오페이</span>
-              </div>
-              <span className="text-[8px] sm:text-[9px] bg-yellow-400/10 text-yellow-400 px-1.5 py-0.5 rounded font-bold flex-shrink-0 hidden xs:inline-block">간편결제</span>
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="kakaopay"
+                checked={formData.paymentMethod === 'kakaopay'}
+                onChange={handleChange}
+                className="hidden"
+              />
+              <span className="text-xs font-bold">카카오페이</span>
             </label>
 
             {/* TossPay */}
-            <label className={`flex items-center justify-between p-3 sm:p-4 rounded-xl border cursor-pointer transition-all ${
+            <label className={`flex items-center justify-center p-4 rounded-xl border cursor-pointer transition-all ${
               formData.paymentMethod === 'tosspay' 
-                ? 'bg-gold/5 border-gold text-gold shadow-lg shadow-gold/5' 
-                : 'bg-white/2 border-white/10 text-gray-400 hover:border-white/20'
+                ? 'bg-gold/5 border-gold text-gold shadow-md' 
+                : 'bg-white/2 border-white/10 text-gray-300 hover:border-white/20'
             }`}>
-              <div className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="tosspay"
-                  checked={formData.paymentMethod === 'tosspay'}
-                  onChange={handleChange}
-                  className="hidden"
-                />
-                <CreditCard className="w-4 h-4 flex-shrink-0" />
-                <span className="text-xs font-semibold">토스페이</span>
-              </div>
-              <span className="text-[8px] sm:text-[9px] bg-blue-400/10 text-blue-400 px-1.5 py-0.5 rounded font-bold flex-shrink-0 hidden xs:inline-block">간편결제</span>
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="tosspay"
+                checked={formData.paymentMethod === 'tosspay'}
+                onChange={handleChange}
+                className="hidden"
+              />
+              <span className="text-xs font-bold">토스페이</span>
             </label>
           </div>
         </div>
 
-        {/* Security / PG sandboxed notice */}
-        <div className="p-4 rounded-2xl bg-white/2 border border-white/5 flex items-start space-x-3 text-[10px] text-gray-500 leading-relaxed">
-          <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-gold flex-shrink-0 mt-0.5" />
-          <div>
-            🔒 **안전 거래 보증 및 샌드박스 알림**<br/>
-            현재 시스템은 안전한 가맹점 결제 테스트(Sandbox) 환경에서 작동하므로 안심하고 진행하실 수 있습니다. 테스트 모드로 실제 청구가 발생하지 않거나 테스트 결제 완료 후 즉시 자동 전액 취소 처리됩니다.
-          </div>
+        {/* Secure Sandbox Note */}
+        <div className="text-center py-2 text-xs text-gray-400 font-medium">
+          🔒 본 결제는 안전한 가상 테스트 결제 모드로 진행됩니다.
         </div>
 
         {/* CTA */}
         <button
           type="submit"
           disabled={loading}
-          className="w-full h-14 bg-gold text-black font-bold text-sm rounded-xl hover:bg-gold/90 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:-translate-y-0 disabled:cursor-not-allowed transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-lg shadow-gold/5"
+          className="w-full h-14 bg-gold text-black font-extrabold text-sm rounded-xl hover:bg-gold/90 transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-lg shadow-gold/5"
         >
           {loading ? (
             <>
@@ -365,10 +353,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
               <span>결제 진행 중...</span>
             </>
           ) : (
-            <>
-              <CheckCircle className="w-4 h-4 fill-current" />
-              <span>{totalAmount.toLocaleString()}원 안전결제 완료</span>
-            </>
+            <span>{totalAmount.toLocaleString()}원 결제하기</span>
           )}
         </button>
       </form>

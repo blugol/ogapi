@@ -67,9 +67,9 @@ export default function AdminPanel({ onClose }) {
       {/* Header */}
       <div className="flex justify-between items-center border-b border-white/5 pb-6 mb-6">
         <div>
-          <span className="inline-flex items-center space-x-1.5 bg-gold/10 text-gold px-2.5 py-1 rounded-full text-[9px] tracking-widest font-semibold uppercase mb-1">
+          <span className="inline-flex items-center space-x-1.5 bg-gold/10 text-gold px-3 py-1.5 rounded-full text-xs font-bold mb-1">
             <ShieldCheck className="w-3 h-3" />
-            <span>Seller Admin Board</span>
+            <span>조선행도가 주문 관리자</span>
           </span>
           <h3 className="text-xl sm:text-2xl font-serif font-bold">오가피로 주문 및 배송 관리 어드민</h3>
         </div>
@@ -148,8 +148,8 @@ export default function AdminPanel({ onClose }) {
                   </td>
                   <td className="p-4">
                     <span className="font-semibold font-serif block text-white">{order.amount.toLocaleString()}원</span>
-                    <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-gray-400 font-semibold inline-block mt-1">
-                      {order.method}
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-gray-400 font-semibold inline-block mt-1">
+                      {order.method === 'kakaopay' ? '카카오페이' : '토스페이'}
                     </span>
                   </td>
                   <td className="p-4 text-center">
