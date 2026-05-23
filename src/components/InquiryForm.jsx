@@ -1,4 +1,3 @@
-import React from 'react';
 import { useForm, ValidationError } from '@formspree/react';
 import { motion } from 'framer-motion';
 
@@ -9,7 +8,7 @@ export default function InquiryForm() {
     return (
       <div className="text-center p-10 glass-panel rounded-xl">
         <h3 className="text-2xl font-bold gold-gradient mb-4">문의가 성공적으로 접수되었습니다.</h3>
-        <p className="text-gray-400">빠른 시일 내에 연락드리겠습니다. 감사합니다.</p>
+        <p className="text-gray-200">빠른 시일 내에 연락드리겠습니다. 감사합니다.</p>
       </div>
     );
   }
@@ -31,7 +30,7 @@ export default function InquiryForm() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">성함 / 업체명</label>
+              <label htmlFor="name" className="block text-sm font-bold text-gray-200 mb-2">성함 / 업체명</label>
               <input
                 id="name"
                 type="text" 
@@ -42,7 +41,7 @@ export default function InquiryForm() {
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-2">이메일 주소</label>
+              <label htmlFor="email" className="block text-sm font-bold text-gray-200 mb-2">이메일 주소</label>
               <input
                 id="email"
                 type="email" 
@@ -56,7 +55,7 @@ export default function InquiryForm() {
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-400 mb-2">연락처</label>
+            <label htmlFor="phone" className="block text-sm font-bold text-gray-200 mb-2">연락처</label>
             <input
               id="phone"
               type="text" 
@@ -67,7 +66,7 @@ export default function InquiryForm() {
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-2">문의 내용</label>
+            <label htmlFor="message" className="block text-sm font-bold text-gray-200 mb-2">문의 내용</label>
             <textarea
               id="message"
               name="message"

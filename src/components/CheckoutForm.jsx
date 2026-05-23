@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { CreditCard, CheckCircle, ShieldAlert, ArrowLeft, Loader2, MapPin, Sparkles, MessageCircle } from 'lucide-react';
 
-export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPaymentSuccess, onKakaoLogin, onLogout }) {
+export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPaymentSuccess, onKakaoLogin, onLogout, cartItems = [] }) {
   const [selectedAddressId, setSelectedAddressId] = useState('');
   const [formData, setFormData] = useState({
     recipient: '',
@@ -130,26 +130,36 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
       {/* Back Header */}
       <button 
         onClick={onBack}
-        className="flex items-center space-x-2 text-xs text-gray-400 hover:text-white mb-6 md:mb-8 transition-colors cursor-pointer"
+        className="flex items-center space-x-2 text-sm text-gray-200 hover:text-white mb-6 md:mb-8 transition-colors cursor-pointer font-bold"
       >
-        <ArrowLeft className="w-4 h-4" />
+        <ArrowLeft className="w-4 h-4 text-gold" />
         <span>상품 정보로 돌아가기</span>
       </button>
 
-      <h3 className="text-xl sm:text-2xl font-serif font-bold mb-5">주문서 작성 및 결제</h3>
+      <h3 className="text-2xl sm:text-3xl font-serif font-bold mb-5 text-white">주문서 작성 및 결제</h3>
 
       {/* Order Brief */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-white/2 border border-white/5 mb-6 space-y-3">
-        <div className="flex justify-between text-xs text-gray-400">
-          <span>주문 상품</span>
-          <span className="font-medium text-white">오가피로 750ml x {quantity}병</span>
-        </div>
-        <div className="flex justify-between text-xs text-gray-400">
+      <div className="p-5 rounded-2xl bg-white/2 border border-white/10 mb-6 space-y-3.5">
+        <div className="text-xs text-gray-300 font-bold uppercase tracking-wider border-b border-white/5 pb-2">주문 품목 요약</div>
+        {cartItems.length > 0 ? (
+          cartItems.map((item) => (
+            <div key={item.id} className="flex justify-between text-xs font-semibold text-white">
+              <span>{item.name}</span>
+              <span className="text-gold font-serif">{item.quantity}병 / {(item.price * item.quantity).toLocaleString()}원</span>
+            </div>
+          ))
+        ) : (
+          <div className="flex justify-between text-xs font-semibold text-white">
+            <span>오가피로 750ml</span>
+            <span className="text-gold font-serif">{quantity}병 / {totalAmount.toLocaleString()}원</span>
+          </div>
+        )}
+        <div className="flex justify-between text-xs text-gray-300 font-medium">
           <span>배송 방식</span>
-          <span className="font-medium text-gold">특급 안심 우체국 택배 (무료배송)</span>
+          <span className="font-bold text-gold">특급 안심 우체국 택배 (무료배송)</span>
         </div>
-        <div className="border-t border-white/5 pt-3 flex justify-between text-sm font-semibold">
-          <span>총 결제금액</span>
+        <div className="border-t border-white/10 pt-3 flex justify-between text-sm font-black">
+          <span className="text-white">최종 결제금액</span>
           <span className="text-gold font-serif text-base sm:text-lg">{totalAmount.toLocaleString()}원</span>
         </div>
       </div>
@@ -162,7 +172,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
               <Sparkles className="w-3.5 h-3.5 fill-current" />
               <span>배송지 입력이 귀찮으신가요?</span>
             </p>
-            <p className="text-[10px] text-gray-400 font-light">카카오 로그인 한 번으로 주소록을 1초 만에 불러옵니다.</p>
+            <p className="text-[11px] text-gray-300 font-medium">카카오 로그인 한 번으로 주소록을 1초 만에 불러옵니다.</p>
           </div>
           <button 
             type="button"
@@ -174,20 +184,20 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
           </button>
         </div>
       ) : (
-        <div className="p-4 rounded-2xl bg-white/2 border border-white/5 flex items-center justify-between mb-6">
+        <div className="p-4 rounded-2xl bg-white/2 border border-white/10 flex items-center justify-between mb-6">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center text-gold font-bold text-xs">
               {user.user_metadata?.full_name?.[0] || 'U'}
             </div>
             <div>
               <p className="text-xs font-bold text-white">{user.user_metadata?.full_name}님 로그인됨</p>
-              <p className="text-[9px] text-gray-500">배송지 자동완성 혜택 적용 중</p>
+              <p className="text-[10px] text-gray-300 font-semibold">배송지 자동완성 혜택 적용 중</p>
             </div>
           </div>
           <button 
             type="button" 
             onClick={onLogout} 
-            className="text-[10px] font-bold text-gray-500 hover:text-white transition-colors cursor-pointer"
+            className="text-xs font-bold text-gray-400 hover:text-white transition-colors cursor-pointer"
           >
             로그아웃
           </button>
@@ -198,14 +208,14 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
         {/* Social Address Autocomplete selector */}
         {user && deliveryAddresses.length > 0 && (
           <div className="space-y-2">
-            <label className="text-[10px] md:text-[11px] text-gold uppercase tracking-widest font-semibold flex items-center space-x-1.5">
+            <label className="text-xs text-gold uppercase tracking-widest font-bold flex items-center space-x-1.5">
               <MapPin className="w-3.5 h-3.5" />
               <span>불러온 카카오 배송지 선택</span>
             </label>
             <select
               value={selectedAddressId}
               onChange={(e) => setSelectedAddressId(e.target.value)}
-              className="w-full h-11 px-4 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 cursor-pointer transition-all"
+              className="w-full h-11 px-4 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 cursor-pointer transition-all font-medium"
             >
               <option value="" className="bg-[#131313]">-- 직접 입력 (새 주소) --</option>
               {deliveryAddresses.map(addr => (
@@ -219,22 +229,22 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
 
         {/* Delivery Details */}
         <div className="space-y-4">
-          <h4 className="text-xs uppercase tracking-widest text-gray-400 font-bold border-b border-white/5 pb-2">배송지 정보</h4>
+          <h4 className="text-xs uppercase tracking-widest text-gray-300 font-bold border-b border-white/10 pb-2">배송지 정보</h4>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className="text-[10px] text-gray-500 font-medium">수령인 성함</label>
+              <label className="text-xs text-gray-300 font-bold">수령인 성함</label>
               <input
                 type="text"
                 name="recipient"
                 value={formData.recipient}
                 onChange={handleChange}
                 required
-                className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all"
+                className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all font-medium"
               />
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] text-gray-500 font-medium">연락처</label>
+              <label className="text-xs text-gray-300 font-bold">연락처</label>
               <input
                 type="tel"
                 name="phone"
@@ -242,25 +252,25 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
                 onChange={handleChange}
                 required
                 placeholder="010-0000-0000"
-                className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all"
+                className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all font-medium"
               />
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] text-gray-500 font-medium">우편번호</label>
+            <label className="text-xs text-gray-300 font-bold">우편번호</label>
             <input
               type="text"
               name="zipcode"
               value={formData.zipcode}
               onChange={handleChange}
               placeholder="우편번호 (선택)"
-              className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all"
+              className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all font-medium"
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] text-gray-500 font-medium">기본 주소</label>
+            <label className="text-xs text-gray-300 font-bold">기본 주소</label>
             <input
               type="text"
               name="baseAddress"
@@ -268,19 +278,19 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
               onChange={handleChange}
               required
               placeholder="예) 서울시 강남구 테헤란로 123"
-              className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all"
+              className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all font-medium"
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] text-gray-500 font-medium">상세 주소</label>
+            <label className="text-xs text-gray-300 font-bold">상세 주소</label>
             <input
               type="text"
               name="detailAddress"
               value={formData.detailAddress}
               onChange={handleChange}
               placeholder="예) 101동 1203호"
-              className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all"
+              className="w-full h-11 px-4 rounded-xl bg-white/3 border border-white/10 text-xs text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 focus:border-gold/50 transition-all font-medium"
             />
           </div>
         </div>

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Phone, MapPin, Globe, ArrowRight, Award, Clock, Heart, Sparkles, LogOut, User, CheckCircle2 } from 'lucide-react';
+import { Phone, MapPin, Globe, ArrowRight, Award, Clock, Heart, Sparkles, LogOut, User, CheckCircle2, ShoppingCart } from 'lucide-react';
 import InquiryForm from './components/InquiryForm';
 import ProductDetail from './components/ProductDetail';
 import LoginModal from './components/LoginModal';
 import CheckoutForm from './components/CheckoutForm';
 import AdminPanel from './components/AdminPanel';
+import CartDrawer from './components/CartDrawer';
 import { useAuth } from './hooks/useAuth';
 
 function App() {
@@ -21,6 +22,60 @@ function App() {
   const [checkoutTotal, setCheckoutTotal] = useState(0);
   const [receipt, setReceipt] = useState(null);
   const [isAdminActive, setIsAdminActive] = useState(false);
+
+  // Cart State
+  const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  // 장바구니 담기 핸들러
+  const handleAddToCart = (quantity) => {
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(item => item.id === 'ogapiro_750ml');
+      if (existingItem) {
+        return prevItems.map(item => 
+          item.id === 'ogapiro_750ml' 
+            ? { ...item, quantity: item.quantity + quantity } 
+            : item
+        );
+      } else {
+        return [
+          ...prevItems,
+          {
+            id: 'ogapiro_750ml',
+            name: '오가피로 프리미엄 고농축액 750ml',
+            price: 45000,
+            quantity: quantity,
+            image: '/assets/story_2.png'
+          }
+        ];
+      }
+    });
+    setIsCartOpen(true); // 담은 즉시 장바구니 드로어 오픈
+  };
+
+  // 장바구니 수량 조정
+  const handleUpdateCartQuantity = (id, newQuantity) => {
+    setCartItems(prevItems => 
+      prevItems.map(item => 
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      )
+    );
+  };
+
+  // 장바구니 아이템 삭제
+  const handleRemoveCartItem = (id) => {
+    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+  };
+
+  // 장바구니에서 주문서로 넘어가기
+  const handleCartCheckout = () => {
+    const totalQty = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const totalAmt = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    setCheckoutQuantity(totalQty);
+    setCheckoutTotal(totalAmt);
+    setIsCartOpen(false);
+    setIsCheckoutActive(true);
+  };
 
   // 구매 진행 핸들러 (로그인 장벽을 완전히 걷어내고 즉시 결제 주문서로 진입!)
   const handlePurchaseInit = (quantity, totalAmount) => {
@@ -65,6 +120,7 @@ function App() {
 
     setReceipt(receiptDetails);
     setIsCheckoutActive(false);
+    setCartItems([]); // 결제 완료 후 장바구니 비우기
   };
 
   return (
@@ -78,8 +134,21 @@ function App() {
           <a href="#inquiry" className="hover:text-gold transition-colors">Contact</a>
         </div>
         
-        {/* Social Profile & CTA */}
+        {/* Social Profile, Cart & CTA */}
         <div className="flex items-center space-x-3 sm:space-x-6">
+          {/* Shopping Cart Header Icon */}
+          <button 
+            onClick={() => setIsCartOpen(true)}
+            className="relative p-2 text-gray-300 hover:text-gold transition-colors cursor-pointer"
+          >
+            <ShoppingCart className="w-5.5 h-5.5" />
+            {cartItems.reduce((sum, item) => sum + item.quantity, 0) > 0 && (
+              <span className="absolute top-0.5 right-0.5 bg-gold text-black font-extrabold text-[8px] sm:text-[9px] w-4.5 h-4.5 rounded-full flex items-center justify-center font-sans border border-black animate-pulse">
+                {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+              </span>
+            )}
+          </button>
+
           {isLoggedIn ? (
             <div className="flex items-center space-x-3 sm:space-x-4 text-xs">
               <span className="flex items-center space-x-1 bg-white/5 border border-white/10 px-2.5 sm:px-3 py-1.5 rounded-full text-gray-300">
@@ -88,7 +157,7 @@ function App() {
               </span>
               <button 
                 onClick={logout}
-                className="text-gray-500 hover:text-white transition-colors flex items-center space-x-1 uppercase tracking-widest text-[9px] font-bold cursor-pointer"
+                className="text-gray-400 hover:text-white transition-colors flex items-center space-x-1 uppercase tracking-widest text-[9px] font-bold cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span className="hidden xs:inline">Logout</span>
@@ -97,7 +166,7 @@ function App() {
           ) : (
             <button 
               onClick={() => setIsLoginModalOpen(true)}
-              className="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition-colors cursor-pointer"
+              className="text-xs uppercase tracking-widest text-gray-300 hover:text-white transition-colors cursor-pointer"
             >
               LOGIN
             </button>
@@ -138,7 +207,7 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1 }}
-            className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-gray-400 font-light leading-relaxed mb-12"
+            className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-gray-200 font-medium leading-relaxed mb-12"
           >
             자연이 빚고 시간이 채우다 <br/>
             첨가물 없이 빚어낸 프리미엄 오가피 발효 농축액의 깊은 숨결을 경험하십시오.
@@ -183,7 +252,7 @@ function App() {
           >
             <Award className="text-gold w-10 h-10 md:w-12 md:h-12" />
             <h2 className="text-3xl md:text-4xl font-serif leading-snug">청정 자연의 기운을 담아 <br className="hidden sm:inline" /> 장인의 손길로 빚어낸 고귀한 한 방울</h2>
-            <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed font-light">
+            <p className="text-gray-200 text-sm sm:text-base md:text-lg leading-relaxed font-medium">
               비옥한 토양과 맑은 공기를 머금고 자란 국내산 최상급 오가피만을 엄선하여 맛과 향의 깊이가 다릅니다. 오랜 기다림과 조선행도가 장인의 섬세한 손길로 자연 본연의 영양 성분과 풍미를 고스란히 농축했습니다.
             </p>
           </motion.div>
@@ -198,7 +267,7 @@ function App() {
           >
             <Clock className="text-gold w-10 h-10 md:w-12 md:h-12" />
             <h2 className="text-3xl md:text-4xl font-serif leading-snug">기다림의 미학, <br className="hidden sm:inline" /> 자연 발효와 저온 숙성</h2>
-            <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed font-light">
+            <p className="text-gray-200 text-sm sm:text-base md:text-lg leading-relaxed font-medium">
               천천히 숙성되는 전통 발효 과정을 통해 인위적인 가공 없이도 깊고 부드러운 맛을 완성합니다. 오가피 본연의 깊은 향과 은은한 단맛, 부드러운 목 넘김이 조화롭게 어우러져 깊은 여운을 남깁니다.
             </p>
           </motion.div>
@@ -220,11 +289,11 @@ function App() {
       </section>
 
       {/* Philosophy Section */}
-      <section className="bg-emerald-dark/10 py-24 md:py-32 border-y border-white/5">
+      <section className="bg-emerald-dark/10 py-24 md:py-32 border-y border-white/10">
         <div className="max-w-4xl mx-auto px-6 text-center space-y-8 md:space-y-12">
           <Heart className="mx-auto text-gold w-10 h-10 md:w-12 md:h-12" />
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif italic leading-snug">"나를 아끼는 기품 있는 습관, 오가피로"</h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-400 font-light leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 font-medium leading-relaxed">
             건강한 몸과 여유로운 마음을 위한 선택. <br/>
             첨가물 없이 오랜 기다림으로 빚어낸 순수한 오가피의 힘이 당신의 귀한 하루를 정성스레 깨웁니다.
           </p>
@@ -232,7 +301,10 @@ function App() {
       </section>
 
       {/* Embedded Premium Product Detail View */}
-      <ProductDetail onPurchase={handlePurchaseInit} />
+      <ProductDetail 
+        onPurchase={handlePurchaseInit} 
+        onAddToCart={handleAddToCart}
+      />
 
       {/* Immersive Checkout overlays */}
       <AnimatePresence>
@@ -252,6 +324,7 @@ function App() {
                 onPaymentSuccess={handlePaymentSuccess}
                 onKakaoLogin={() => setIsLoginModalOpen(true)}
                 onLogout={logout}
+                cartItems={cartItems}
               />
             </motion.div>
           </div>
@@ -273,6 +346,16 @@ function App() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Immersive Shopping Cart Drawer */}
+      <CartDrawer 
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cartItems={cartItems}
+        onUpdateQuantity={handleUpdateCartQuantity}
+        onRemoveItem={handleRemoveCartItem}
+        onCheckout={handleCartCheckout}
+      />
 
       {/* Social Login Modal */}
       <LoginModal 
@@ -303,38 +386,38 @@ function App() {
             >
               <CheckCircle2 className="w-12 h-12 sm:w-16 sm:h-16 text-gold mx-auto" />
               <div className="space-y-2">
-                <span className="inline-block bg-gold/10 text-gold px-3 py-1 rounded-full text-[9px] tracking-widest font-semibold uppercase">
+                <span className="inline-block bg-gold/10 text-gold px-3.5 py-1.5 rounded-full text-xs tracking-widest font-semibold uppercase">
                   Order Completed
                 </span>
-                <h3 className="text-xl sm:text-2xl font-serif font-bold leading-tight">귀하의 고귀한 주문이 <br/>완벽히 접수되었습니다</h3>
-                <p className="text-[11px] sm:text-xs text-gray-500 font-light leading-relaxed">
+                <h3 className="text-2xl font-serif font-bold leading-tight">귀하의 고귀한 주문이 <br/>완벽히 접수되었습니다</h3>
+                <p className="text-xs text-gray-200 font-medium leading-relaxed">
                   전통을 품은 정성 가득한 오가피 농축액을 귀하의 소중한 처소로 신속하고 안전하게 전달해 드리겠습니다.
                 </p>
               </div>
 
               {/* Receipt Body */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-white/2 border border-white/5 text-left text-[11px] sm:text-xs space-y-2 font-light text-gray-400">
+              <div className="p-4 sm:p-5 rounded-2xl bg-white/2 border border-white/10 text-left text-xs space-y-2.5 font-medium text-gray-200">
                 <div className="flex justify-between">
                   <span>주문 번호:</span>
                   <span className="text-white font-mono">{receipt.merchant_uid}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>수령인:</span>
-                  <span className="text-white font-medium">{receipt.recipient}</span>
+                  <span className="text-white font-bold">{receipt.recipient}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>연락처:</span>
-                  <span className="text-white font-medium">{receipt.phone}</span>
+                  <span className="text-white font-bold">{receipt.phone}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>배송 주소:</span>
-                  <span className="text-white font-medium text-right max-w-[200px] truncate">{receipt.address}</span>
+                  <span className="text-white font-bold text-right max-w-[200px] truncate">{receipt.address}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>결제 수단:</span>
-                  <span className="text-gold font-medium uppercase">{receipt.method} 간편결제</span>
+                  <span className="text-gold font-bold uppercase">{receipt.method} 간편결제</span>
                 </div>
-                <div className="border-t border-white/5 pt-2 flex justify-between font-bold text-xs sm:text-sm">
+                <div className="border-t border-white/10 pt-2 flex justify-between font-black text-sm">
                   <span className="text-gold">최종 결제액:</span>
                   <span className="text-gold font-serif">{receipt.amount.toLocaleString()}원</span>
                 </div>
@@ -355,40 +438,40 @@ function App() {
       <InquiryForm />
 
       {/* Footer */}
-      <footer className="bg-black pt-24 pb-12 px-6 sm:px-8 border-t border-white/5">
+      <footer className="bg-black pt-24 pb-12 px-6 sm:px-8 border-t border-white/10">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 md:gap-12 mb-16 md:mb-20">
             <div className="col-span-2">
               <div className="text-2xl sm:text-3xl font-bold font-serif gold-gradient mb-6 md:mb-8 tracking-widest uppercase">OGAPIRO</div>
-              <p className="max-w-md text-gray-500 font-light text-xs sm:text-sm leading-relaxed">
+              <p className="max-w-md text-gray-200 font-medium text-xs sm:text-sm leading-relaxed">
                 조선행도가는 전통의 방식을 현대적인 감각으로 재해석하여, 
                 누구에게나 고귀한 경험을 선사하는 프리미엄 농축액을 빚습니다.
               </p>
             </div>
             <div>
               <h4 className="text-xs sm:text-sm font-bold uppercase tracking-widest mb-6 md:mb-8 text-gold">Contact</h4>
-              <ul className="space-y-3 sm:space-y-4 text-gray-500 font-light text-xs sm:text-sm">
+              <ul className="space-y-3 sm:space-y-4 text-gray-200 font-bold text-xs sm:text-sm">
                 <li className="flex items-center space-x-3">
-                  <Phone className="w-4 h-4 flex-shrink-0" />
+                  <Phone className="w-4 h-4 flex-shrink-0 text-gold" />
                   <span>041-633-2676</span>
                 </li>
                 <li className="flex items-start space-x-3">
-                  <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                  <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5 text-gold" />
                   <span>충남 홍성군 구항면 거북로 386-35</span>
                 </li>
               </ul>
             </div>
             <div>
               <h4 className="text-xs sm:text-sm font-bold uppercase tracking-widest mb-6 md:mb-8 text-gold">Online</h4>
-              <ul className="space-y-3 sm:space-y-4 text-gray-500 font-light text-xs sm:text-sm">
+              <ul className="space-y-3 sm:space-y-4 text-gray-200 font-bold text-xs sm:text-sm">
                 <li className="flex items-center space-x-3">
-                  <Globe className="w-4 h-4 flex-shrink-0" />
-                  <a href="http://www.ogapiro.com" target="_blank" className="hover:text-white transition-colors">www.ogapiro.com</a>
+                  <Globe className="w-4 h-4 flex-shrink-0 text-gold" />
+                  <a href="http://www.ogapiro.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">www.ogapiro.com</a>
                 </li>
               </ul>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row justify-between items-center pt-8 md:pt-12 border-t border-white/5 text-[10px] text-gray-600 uppercase tracking-[0.2em] gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-center pt-8 md:pt-12 border-t border-white/10 text-[10px] text-gray-400 uppercase tracking-[0.2em] gap-4">
             <p>© 2026 조선행도가 All rights reserved.</p>
             <div className="space-x-6 sm:space-x-8">
               <span onClick={() => setIsAdminActive(true)} className="cursor-pointer hover:text-gold transition-colors text-gold/60 font-semibold uppercase tracking-widest">[어드민 주문관리]</span>

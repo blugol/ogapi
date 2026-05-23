@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sparkles, MessageCircle } from 'lucide-react';
 
@@ -27,7 +26,7 @@ export default function LoginModal({ isOpen, onClose, onLoginKakao, onLoginGoogl
             {/* Close Button */}
             <button 
               onClick={onClose}
-              className="absolute right-5 top-5 sm:right-6 sm:top-6 text-gray-500 hover:text-white transition-colors cursor-pointer"
+              className="absolute right-5 top-5 sm:right-6 sm:top-6 text-gray-400 hover:text-white transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -38,12 +37,12 @@ export default function LoginModal({ isOpen, onClose, onLoginKakao, onLoginGoogl
 
             {/* Header */}
             <div className="text-center mt-3 sm:mt-4 mb-6 sm:mb-8 space-y-3">
-              <span className="inline-flex items-center space-x-1 bg-gold/10 text-gold px-2.5 py-1 rounded-full text-[9px] md:text-[10px] tracking-widest font-semibold uppercase">
-                <Sparkles className="w-3 h-3" />
+              <span className="inline-flex items-center space-x-1 bg-gold/10 text-gold px-3 py-1 rounded-full text-xs tracking-widest font-semibold uppercase">
+                <Sparkles className="w-3.5 h-3.5" />
                 <span>1-Second Easy Login</span>
               </span>
-              <h3 className="text-xl sm:text-2xl font-serif font-bold tracking-tight">조선행도가 로그인</h3>
-              <p className="text-[11px] sm:text-xs text-gray-500 max-w-[280px] mx-auto leading-relaxed font-light">
+              <h3 className="text-2xl font-serif font-bold tracking-tight text-white">조선행도가 로그인</h3>
+              <p className="text-xs text-gray-200 max-w-[300px] mx-auto leading-relaxed font-medium">
                 로그인 후 카카오에 등록된 기본 배송지 주소를 자동으로 가져와 편리하게 주문을 완료하실 수 있습니다.
               </p>
             </div>
@@ -74,7 +73,7 @@ export default function LoginModal({ isOpen, onClose, onLoginKakao, onLoginGoogl
 
             {/* Demo Mode Notice */}
             {isDemoMode && (
-              <div className="mt-6 sm:mt-8 p-3 rounded-xl bg-gold/5 border border-gold/10 text-[9px] sm:text-[10px] text-gold/80 text-center leading-relaxed">
+              <div className="mt-6 sm:mt-8 p-4 rounded-xl bg-gold/5 border border-gold/20 text-xs text-gold font-bold text-center leading-relaxed">
                 💡 **로컬 개발/시뮬레이션 모드 활성화**<br/>
                 현재 Supabase 연동 전으로, 버튼 클릭 시 가상의 카카오 싱크/구글 프로필과 주소록이 주입되는 **체험 데모 로그인**이 자동 진행됩니다.
               </div>
