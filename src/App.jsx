@@ -1,24 +1,95 @@
-import React, { useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Phone, MapPin, Globe, ArrowRight, Award, Clock, Heart, GlassWater } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { Phone, MapPin, Globe, ArrowRight, Award, Clock, Heart, GlassWater, LogOut, User, CheckCircle2, Sparkles } from 'lucide-react';
 import InquiryForm from './components/InquiryForm';
+import ProductDetail from './components/ProductDetail';
+import LoginModal from './components/LoginModal';
+import CheckoutForm from './components/CheckoutForm';
+import { useAuth } from './hooks/useAuth';
 
 function App() {
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
+  // Auth & Checkout State
+  const { user, isLoggedIn, isDemoMode, loginWithKakao, loginWithGoogle, logout } = useAuth();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isCheckoutActive, setIsCheckoutActive] = useState(false);
+  const [checkoutQuantity, setCheckoutQuantity] = useState(1);
+  const [checkoutTotal, setCheckoutTotal] = useState(0);
+  const [receipt, setReceipt] = useState(null);
+
+  // 구매 진행 핸들러
+  const handlePurchaseInit = (quantity, totalAmount) => {
+    setCheckoutQuantity(quantity);
+    setCheckoutTotal(totalAmount);
+    
+    if (isLoggedIn) {
+      setIsCheckoutActive(true);
+    } else {
+      setIsLoginModalOpen(true);
+    }
+  };
+
+  // 로그인 성공 후 후속 처리 (구매 연동)
+  const handleSocialLogin = async (type) => {
+    try {
+      if (type === 'kakao') {
+        await loginWithKakao();
+      } else {
+        await loginWithGoogle();
+      }
+      setIsLoginModalOpen(false);
+      // 로그인 완료 후 바로 결제창 활성화
+      setIsCheckoutActive(true);
+    } catch (err) {
+      console.error('로그인 에러:', err);
+    }
+  };
+
+  const handlePaymentSuccess = (receiptDetails) => {
+    setReceipt(receiptDetails);
+    setIsCheckoutActive(false);
+  };
+
   return (
-    <div className="bg-obsidian text-white selection:bg-gold selection:text-black">
+    <div className="bg-obsidian text-white selection:bg-gold selection:text-black min-h-screen">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 px-8 py-6 flex justify-between items-center glass-panel border-b-0">
+      <nav className="fixed top-0 w-full z-40 px-8 py-6 flex justify-between items-center glass-panel border-b border-white/5">
         <div className="text-2xl font-bold font-serif tracking-widest gold-gradient">OGAPIRO</div>
-        <div className="hidden md:flex space-x-12 text-sm uppercase tracking-widest font-medium">
+        <div className="hidden md:flex space-x-12 text-sm uppercase tracking-widest font-medium items-center">
           <a href="#story" className="hover:text-gold transition-colors">Story</a>
-          <a href="#quality" className="hover:text-gold transition-colors">Quality</a>
+          <a href="#product-detail" className="hover:text-gold transition-colors">Product</a>
           <a href="#inquiry" className="hover:text-gold transition-colors">Contact</a>
         </div>
-        <a href="#inquiry" className="border border-gold/30 px-6 py-2 rounded-full text-xs hover:bg-gold hover:text-black transition-all">PROJECT INQUIRY</a>
+        
+        {/* Social Profile & CTA */}
+        <div className="flex items-center space-x-6">
+          {isLoggedIn ? (
+            <div className="flex items-center space-x-4 text-xs">
+              <span className="flex items-center space-x-1 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-gray-300">
+                <User className="w-3.5 h-3.5 text-gold" />
+                <span className="font-semibold text-[10px]">{user.user_metadata?.full_name || user.email}님</span>
+              </span>
+              <button 
+                onClick={logout}
+                className="text-gray-500 hover:text-white transition-colors flex items-center space-x-1 uppercase tracking-widest text-[9px] font-bold cursor-pointer"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Logout</span>
+              </button>
+            </div>
+          ) : (
+            <button 
+              onClick={() => setIsLoginModalOpen(true)}
+              className="text-xs uppercase tracking-widest text-gray-400 hover:text-white transition-colors cursor-pointer"
+            >
+              LOGIN
+            </button>
+          )}
+          <a href="#product-detail" className="border border-gold/30 px-6 py-2 rounded-full text-xs hover:bg-gold hover:text-black transition-all uppercase tracking-widest font-semibold">BUY NOW</a>
+        </div>
       </nav>
 
       {/* Hero Section */}
@@ -55,16 +126,18 @@ function App() {
             transition={{ duration: 1, delay: 1 }}
             className="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 font-light leading-relaxed mb-12"
           >
-            보존료 없이 빚은 프리미엄 오가피 와인 <br/>
+            보존료 없이 빚은 프리미엄 오가피 농축액 <br/>
             세월로 빚어낸 오가피의 깊은 숨결을 경험하십시오.
           </motion.p>
           <motion.div
              initial={{ opacity: 0 }}
              animate={{ opacity: 1 }}
              transition={{ duration: 1, delay: 1.5 }}
+             className="flex justify-center space-x-6"
           >
-            <a href="#story" className="group flex items-center justify-center space-x-3 text-gold">
-              <span className="uppercase tracking-[0.3em] text-xs">Explore the Story</span>
+            <a href="#product-detail" className="bg-gold text-black px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-gold/90 transition-all">Order Premium Bottle</a>
+            <a href="#story" className="group flex items-center justify-center space-x-3 text-gold text-xs uppercase tracking-widest">
+              <span>Explore the Story</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
             </a>
           </motion.div>
@@ -146,6 +219,108 @@ function App() {
         </div>
       </section>
 
+      {/* Embedded Premium Product Detail View */}
+      <ProductDetail onPurchase={handlePurchaseInit} />
+
+      {/* Immersive Checkout overlays */}
+      <AnimatePresence>
+        {isCheckoutActive && (
+          <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="w-full max-w-2xl"
+            >
+              <CheckoutForm 
+                user={user}
+                totalAmount={checkoutTotal}
+                quantity={checkoutQuantity}
+                onBack={() => setIsCheckoutActive(false)}
+                onPaymentSuccess={handlePaymentSuccess}
+              />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Social Login Modal */}
+      <LoginModal 
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        onLoginKakao={() => handleSocialLogin('kakao')}
+        onLoginGoogle={() => handleSocialLogin('google')}
+        isDemoMode={isDemoMode}
+      />
+
+      {/* Payment Success Receipt Dialog */}
+      <AnimatePresence>
+        {receipt && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setReceipt(null)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            />
+            
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 30 }}
+              className="relative w-full max-w-md overflow-hidden rounded-3xl bg-[#131313] p-8 border border-gold/20 shadow-2xl text-center space-y-6"
+            >
+              <CheckCircle2 className="w-16 h-16 text-gold mx-auto" />
+              <div className="space-y-2">
+                <span className="inline-block bg-gold/10 text-gold px-3 py-1 rounded-full text-[10px] tracking-widest font-semibold uppercase">
+                  Order Completed
+                </span>
+                <h3 className="text-2xl font-serif font-bold">귀하의 고귀한 주문이 <br/>완벽히 접수되었습니다</h3>
+                <p className="text-xs text-gray-500">
+                  전통을 품은 정성 가득한 오가피 농축액을 귀하의 소중한 처소로 신속하고 안전하게 전달해 드리겠습니다.
+                </p>
+              </div>
+
+              {/* Receipt Body */}
+              <div className="p-5 rounded-2xl bg-white/2 border border-white/5 text-left text-xs space-y-2 font-light text-gray-400">
+                <div className="flex justify-between">
+                  <span>주문 번호:</span>
+                  <span className="text-white font-mono">{receipt.merchant_uid}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>수령인:</span>
+                  <span className="text-white font-medium">{receipt.recipient}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>연락처:</span>
+                  <span className="text-white font-medium">{receipt.phone}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>배송 주소:</span>
+                  <span className="text-white font-medium text-right max-w-[200px] truncate">{receipt.address}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>결제 수단:</span>
+                  <span className="text-gold font-medium uppercase">{receipt.method} 간편결제</span>
+                </div>
+                <div className="border-t border-white/5 pt-2 flex justify-between font-bold text-sm">
+                  <span className="text-gold">최종 결제액:</span>
+                  <span className="text-gold font-serif">{receipt.amount.toLocaleString()}원</span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setReceipt(null)}
+                className="w-full h-12 bg-gold text-black font-bold text-xs rounded-xl hover:bg-gold/90 transition-all cursor-pointer"
+              >
+                영수증 확인 및 돌아가기
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Inquiry Form */}
       <InquiryForm />
 
@@ -157,7 +332,7 @@ function App() {
               <div className="text-3xl font-bold font-serif gold-gradient mb-8 tracking-widest uppercase">OGAPIRO</div>
               <p className="max-w-md text-gray-500 font-light leading-relaxed">
                 조선행도가는 전통의 방식을 현대적인 감각으로 재해석하여, 
-                누구에게나 고귀한 경험을 선사하는 프리미엄 와인을 빚습니다.
+                누구에게나 고귀한 경험을 선사하는 프리미엄 농축액을 빚습니다.
               </p>
             </div>
             <div>
@@ -184,10 +359,10 @@ function App() {
             </div>
           </div>
           <div className="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-white/5 text-[10px] text-gray-600 uppercase tracking-[0.2em]">
-            <p>© 2025 조선행도가 All rights reserved.</p>
+            <p>© 2026 조선행도가 All rights reserved.</p>
             <div className="mt-4 md:mt-0 space-x-8">
-              <span>Privacy Policy</span>
-              <span>Terms of Service</span>
+              <span className="cursor-pointer hover:text-white transition-colors">Privacy Policy</span>
+              <span className="cursor-pointer hover:text-white transition-colors">Terms of Service</span>
             </div>
           </div>
         </div>
