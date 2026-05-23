@@ -20,16 +20,11 @@ function App() {
   const [checkoutTotal, setCheckoutTotal] = useState(0);
   const [receipt, setReceipt] = useState(null);
 
-  // 구매 진행 핸들러
+  // 구매 진행 핸들러 (로그인 장벽을 완전히 걷어내고 즉시 결제 주문서로 진입!)
   const handlePurchaseInit = (quantity, totalAmount) => {
     setCheckoutQuantity(quantity);
     setCheckoutTotal(totalAmount);
-    
-    if (isLoggedIn) {
-      setIsCheckoutActive(true);
-    } else {
-      setIsLoginModalOpen(true);
-    }
+    setIsCheckoutActive(true);
   };
 
   // 로그인 성공 후 후속 처리 (구매 연동)
@@ -41,8 +36,6 @@ function App() {
         await loginWithGoogle();
       }
       setIsLoginModalOpen(false);
-      // 로그인 완료 후 바로 결제창 활성화
-      setIsCheckoutActive(true);
     } catch (err) {
       console.error('로그인 에러:', err);
     }
@@ -170,7 +163,7 @@ function App() {
             <Award className="text-gold w-10 h-10 md:w-12 md:h-12" />
             <h2 className="text-3xl md:text-4xl font-serif leading-snug">청정 자연의 기운을 담아 <br className="hidden sm:inline" /> 장인의 손길로 빚어낸 고귀한 한 방울</h2>
             <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed font-light">
-              비옥한 토양과 맑은 공기를 머금고 자란 국내산 최상급 오가피만을 엄선하여 맛과 향의 깊이가 다릅니다. 오랜 기다림과 조선행도가 장인의 섬세한 손길로 자연 본연의 영양 성분과 풍미를 고스란히 농축했습니다.
+              비옥한 토양과 맑은 공기를 머금고 자란 국내산 최상급 오가피만을 사용하여 맛과 향의 깊이가 다릅니다. 오랜 기다림과 조선행도가 장인의 섬세한 손길로 자연 본연의 영양 성분과 풍미를 고스란히 농축했습니다.
             </p>
           </motion.div>
         </div>
@@ -236,6 +229,8 @@ function App() {
                 quantity={checkoutQuantity}
                 onBack={() => setIsCheckoutActive(false)}
                 onPaymentSuccess={handlePaymentSuccess}
+                onKakaoLogin={() => setIsLoginModalOpen(true)}
+                onLogout={logout}
               />
             </motion.div>
           </div>

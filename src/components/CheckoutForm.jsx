@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { CreditCard, CheckCircle, ShieldAlert, ArrowLeft, Loader2, MapPin } from 'lucide-react';
+import { CreditCard, CheckCircle, ShieldAlert, ArrowLeft, Loader2, MapPin, Sparkles, MessageCircle } from 'lucide-react';
 
-export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPaymentSuccess }) {
+export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPaymentSuccess, onKakaoLogin, onLogout }) {
   const [selectedAddressId, setSelectedAddressId] = useState('');
   const [formData, setFormData] = useState({
     recipient: '',
@@ -141,10 +141,10 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
       <h3 className="text-xl sm:text-2xl font-serif font-bold mb-5">주문서 작성 및 결제</h3>
 
       {/* Order Brief */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-white/2 border border-white/5 mb-6 md:mb-8 space-y-3">
+      <div className="p-4 sm:p-5 rounded-2xl bg-white/2 border border-white/5 mb-6 space-y-3">
         <div className="flex justify-between text-xs text-gray-400">
           <span>주문 상품</span>
-          <span className="font-medium text-white">오가피로 Obsidian 365 x {quantity}병</span>
+          <span className="font-medium text-white">오가피로 750ml x {quantity}병</span>
         </div>
         <div className="flex justify-between text-xs text-gray-400">
           <span>배송 방식</span>
@@ -156,13 +156,53 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
         </div>
       </div>
 
+      {/* Hybrid Banner Block */}
+      {!user ? (
+        <div className="p-4 rounded-2xl bg-[#FEE500]/10 border border-[#FEE500]/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left mb-6">
+          <div className="space-y-1">
+            <p className="text-xs font-bold text-[#FEE500] flex items-center justify-center sm:justify-start gap-1">
+              <Sparkles className="w-3.5 h-3.5 fill-current" />
+              <span>배송지 입력이 귀찮으신가요?</span>
+            </p>
+            <p className="text-[10px] text-gray-400 font-light">카카오 로그인 한 번으로 주소록을 1초 만에 불러옵니다.</p>
+          </div>
+          <button 
+            type="button"
+            onClick={onKakaoLogin}
+            className="h-10 px-4 bg-[#FEE500] text-[#191919] text-xs font-bold rounded-xl hover:bg-[#FEE500]/90 transition-all flex items-center gap-1.5 cursor-pointer shadow-md shadow-[#FEE500]/5 shrink-0"
+          >
+            <MessageCircle className="w-4 h-4 fill-current" />
+            <span>카카오 1초 로그인</span>
+          </button>
+        </div>
+      ) : (
+        <div className="p-4 rounded-2xl bg-white/2 border border-white/5 flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center text-gold font-bold text-xs">
+              {user.user_metadata?.full_name?.[0] || 'U'}
+            </div>
+            <div>
+              <p className="text-xs font-bold text-white">{user.user_metadata?.full_name}님 로그인됨</p>
+              <p className="text-[9px] text-gray-500">배송지 자동완성 혜택 적용 중</p>
+            </div>
+          </div>
+          <button 
+            type="button" 
+            onClick={onLogout} 
+            className="text-[10px] font-bold text-gray-500 hover:text-white transition-colors cursor-pointer"
+          >
+            로그아웃
+          </button>
+        </div>
+      )}
+
       <form onSubmit={handlePay} className="space-y-5 md:space-y-6">
         {/* Social Address Autocomplete selector */}
-        {deliveryAddresses.length > 0 && (
+        {user && deliveryAddresses.length > 0 && (
           <div className="space-y-2">
             <label className="text-[10px] md:text-[11px] text-gold uppercase tracking-widest font-semibold flex items-center space-x-1.5">
               <MapPin className="w-3.5 h-3.5" />
-              <span>카카오 싱크 배송지 불러오기</span>
+              <span>불러온 카카오 배송지 선택</span>
             </label>
             <select
               value={selectedAddressId}
@@ -181,7 +221,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
 
         {/* Delivery Details */}
         <div className="space-y-4">
-          <h4 className="text-xs uppercase tracking-widest text-gray-400 font-bold border-b border-white/5 pb-2">배송 정보</h4>
+          <h4 className="text-xs uppercase tracking-widest text-gray-400 font-bold border-b border-white/5 pb-2">배송지 정보</h4>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
