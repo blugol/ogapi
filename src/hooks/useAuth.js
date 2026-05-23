@@ -4,7 +4,7 @@ import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 export function useAuth() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isDemoMode, setIsDemoMode] = useState(!isSupabaseConfigured);
+  const isDemoMode = !isSupabaseConfigured;
 
   // 로컬 스토리지에서 데모 유저 정보 로드
   useEffect(() => {

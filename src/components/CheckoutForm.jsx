@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { CreditCard, CheckCircle, ShieldAlert, ArrowLeft, Loader2, MapPin, Sparkles, MessageCircle } from 'lucide-react';
 
 export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPaymentSuccess, onKakaoLogin, onLogout }) {
@@ -14,7 +13,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
   });
 
   const [loading, setLoading] = useState(false);
-  const [sdkLoaded, setSdkLoaded] = useState(false);
+
 
   // 로드된 소셜 배송지 리스트
   const deliveryAddresses = user?.user_metadata?.delivery_addresses || [];
@@ -50,7 +49,6 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
     const script = document.createElement('script');
     script.src = 'https://cdn.iamport.kr/v1/iamport.js';
     script.async = true;
-    script.onload = () => setSdkLoaded(true);
     document.body.appendChild(script);
 
     return () => {
