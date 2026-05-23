@@ -5,6 +5,7 @@ import InquiryForm from './components/InquiryForm';
 import ProductDetail from './components/ProductDetail';
 import LoginModal from './components/LoginModal';
 import CheckoutForm from './components/CheckoutForm';
+import AdminPanel from './components/AdminPanel';
 import { useAuth } from './hooks/useAuth';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
   const [checkoutQuantity, setCheckoutQuantity] = useState(1);
   const [checkoutTotal, setCheckoutTotal] = useState(0);
   const [receipt, setReceipt] = useState(null);
+  const [isAdminActive, setIsAdminActive] = useState(false);
 
   // 구매 진행 핸들러 (로그인 장벽을 완전히 걷어내고 즉시 결제 주문서로 진입!)
   const handlePurchaseInit = (quantity, totalAmount) => {
@@ -41,7 +43,26 @@ function App() {
     }
   };
 
+  // 결제 성공 핸들러
   const handlePaymentSuccess = (receiptDetails) => {
+    // 실시간 주문 데이터를 로컬스토리지 DB에 연동 (어드민 연동)
+    const newOrder = {
+      merchant_uid: receiptDetails.merchant_uid,
+      recipient: receiptDetails.recipient,
+      phone: receiptDetails.phone,
+      address: receiptDetails.address,
+      amount: receiptDetails.amount,
+      quantity: checkoutQuantity,
+      method: receiptDetails.method,
+      status: '배송 대기',
+      created_at: new Date().toLocaleString()
+    };
+
+    const savedOrders = localStorage.getItem('ogapiro_orders');
+    const ordersList = savedOrders ? JSON.parse(savedOrders) : [];
+    const updatedOrdersList = [newOrder, ...ordersList];
+    localStorage.setItem('ogapiro_orders', JSON.stringify(updatedOrdersList));
+
     setReceipt(receiptDetails);
     setIsCheckoutActive(false);
   };
@@ -163,7 +184,7 @@ function App() {
             <Award className="text-gold w-10 h-10 md:w-12 md:h-12" />
             <h2 className="text-3xl md:text-4xl font-serif leading-snug">청정 자연의 기운을 담아 <br className="hidden sm:inline" /> 장인의 손길로 빚어낸 고귀한 한 방울</h2>
             <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed font-light">
-              비옥한 토양과 맑은 공기를 머금고 자란 국내산 최상급 오가피만을 사용하여 맛과 향의 깊이가 다릅니다. 오랜 기다림과 조선행도가 장인의 섬세한 손길로 자연 본연의 영양 성분과 풍미를 고스란히 농축했습니다.
+              비옥한 토양과 맑은 공기를 머금고 자란 국내산 최상급 오가피만을 엄선하여 맛과 향의 깊이가 다릅니다. 오랜 기다림과 조선행도가 장인의 섬세한 손길로 자연 본연의 영양 성분과 풍미를 고스란히 농축했습니다.
             </p>
           </motion.div>
         </div>
@@ -232,6 +253,22 @@ function App() {
                 onKakaoLogin={() => setIsLoginModalOpen(true)}
                 onLogout={logout}
               />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Immersive Admin Panel overlays */}
+      <AnimatePresence>
+        {isAdminActive && (
+          <div className="fixed inset-0 z-50 overflow-y-auto bg-black/95 backdrop-blur-md flex items-start justify-center p-4 py-8 sm:py-12">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="w-full max-w-5xl my-auto"
+            >
+              <AdminPanel onClose={() => setIsAdminActive(false)} />
             </motion.div>
           </div>
         )}
@@ -354,6 +391,7 @@ function App() {
           <div className="flex flex-col md:flex-row justify-between items-center pt-8 md:pt-12 border-t border-white/5 text-[10px] text-gray-600 uppercase tracking-[0.2em] gap-4">
             <p>© 2026 조선행도가 All rights reserved.</p>
             <div className="space-x-6 sm:space-x-8">
+              <span onClick={() => setIsAdminActive(true)} className="cursor-pointer hover:text-gold transition-colors text-gold/60 font-semibold uppercase tracking-widest">[어드민 주문관리]</span>
               <span className="cursor-pointer hover:text-white transition-colors">Privacy Policy</span>
               <span className="cursor-pointer hover:text-white transition-colors">Terms of Service</span>
             </div>
