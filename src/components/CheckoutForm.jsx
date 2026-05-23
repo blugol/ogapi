@@ -208,7 +208,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
         {/* Social Address Autocomplete selector */}
         {user && deliveryAddresses.length > 0 && (
           <div className="space-y-2">
-            <label className="text-xs text-gold uppercase tracking-widest font-bold flex items-center space-x-1.5">
+            <label className="text-xs text-gold font-bold flex items-center space-x-1.5">
               <MapPin className="w-3.5 h-3.5" />
               <span>불러온 카카오 배송지 선택</span>
             </label>
@@ -229,7 +229,7 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
 
         {/* Delivery Details */}
         <div className="space-y-4">
-          <h4 className="text-xs uppercase tracking-widest text-gray-300 font-bold border-b border-white/10 pb-2">배송지 정보</h4>
+          <h4 className="text-xs text-gray-300 font-bold border-b border-white/10 pb-2">배송지 정보</h4>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">

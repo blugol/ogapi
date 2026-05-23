@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, X, Plus, Minus, Trash2, ShieldCheck, ArrowRight } from 'lucide-react';
+import { ShoppingBag, X, Plus, Minus, Trash2, ShieldCheck } from 'lucide-react';
 
 export default function CartDrawer({ 
   isOpen, 
@@ -70,7 +70,7 @@ export default function CartDrawer({
                   </div>
                   <button
                     onClick={onClose}
-                    className="border border-gold/30 hover:border-gold hover:bg-gold hover:text-black text-gold text-xs px-6 py-2.5 rounded-full font-semibold uppercase tracking-widest transition-all cursor-pointer"
+                    className="border border-gold/30 hover:border-gold hover:bg-gold hover:text-black text-gold text-xs px-6 py-2.5 rounded-full font-bold transition-all cursor-pointer"
                   >
                     쇼핑 계속하기
                   </button>
@@ -157,10 +157,9 @@ export default function CartDrawer({
                 {/* Checkout CTA Button */}
                 <button
                   onClick={onCheckout}
-                  className="w-full h-13 bg-gold text-black font-bold text-xs sm:text-sm rounded-xl hover:bg-gold/90 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-lg shadow-gold/5 uppercase tracking-widest"
+                  className="w-full h-13 bg-gold text-black font-extrabold text-sm rounded-xl hover:bg-gold/90 transition-all flex items-center justify-center cursor-pointer shadow-lg shadow-gold/5"
                 >
                   <span>결제 주문서 작성하기</span>
-                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             )}
