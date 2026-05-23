@@ -90,8 +90,8 @@ export default function CheckoutForm({ user, totalAmount, quantity, onBack, onPa
     }
 
     const IMP = window.IMP;
-    // 포트원 기본 테스트 가맹점 식별코드
-    IMP.init('imp00000000'); 
+    // 포트원 고객사 식별코드 적용
+    IMP.init('imp86612685'); 
 
     // PG사 구분자 설정
     const pgProvider = formData.paymentMethod === 'kakaopay' 
