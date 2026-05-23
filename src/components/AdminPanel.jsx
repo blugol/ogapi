@@ -14,26 +14,43 @@ export default function AdminPanel({ onClose }) {
       // 데모용 기본 주문 예시 데이터 삽입 (회의실 시연용)
       const demoOrders = [
         {
-          merchant_uid: 'mid_1779284102951',
+          merchant_uid: 'ogapiro_1779284102951',
           recipient: '이몽룡',
           phone: '010-8888-9999',
-          address: '서울시 마포구 독막로 123 (상수동아파트 102동 405호)',
+          address: '서울시 마포구 독막로 123 102동 405호',
           amount: 90000,
           quantity: 2,
-          method: 'kakaopay',
+          items: [{ name: '오가피로 750ml', quantity: 2, price: 45000 }],
+          method: '카카오페이',
+          memo: '',
           status: '배송 대기',
-          created_at: new Date(Date.now() - 3600000 * 3).toLocaleString() // 3시간 전
+          created_at: new Date(Date.now() - 3600000 * 3).toLocaleString()
         },
         {
-          merchant_uid: 'mid_1779284305819',
-          recipient: '춘향이',
+          merchant_uid: 'ogapiro_1779284305819',
+          recipient: '인제쉙',
           phone: '010-7777-1111',
-          address: '전라북도 남원시 요천로 456 (광한루촌 17호)',
+          address: '전라북도 남원시 요천로 456',
+          amount: 22000,
+          quantity: 1,
+          items: [{ name: '오가피로 375ml', quantity: 1, price: 22000 }],
+          method: '토스페이',
+          memo: '경비실에 맡겼주세요',
+          status: '배송 완료',
+          created_at: new Date(Date.now() - 3600000 * 24).toLocaleString()
+        },
+        {
+          merchant_uid: 'ogapiro_1779299001234',
+          recipient: '홍길동',
+          phone: '010-1234-5678',
+          address: '서울시 강남구 테헤란로 152',
           amount: 45000,
           quantity: 1,
-          method: 'tosspay',
-          status: '배송 완료',
-          created_at: new Date(Date.now() - 3600000 * 24).toLocaleString() // 24시간 전
+          items: [{ name: '오가피로 750ml', quantity: 1, price: 45000 }],
+          method: '무통장 입금',
+          memo: '',
+          status: '배송 대기',
+          created_at: new Date(Date.now() - 3600000 * 1).toLocaleString()
         }
       ];
       localStorage.setItem('ogapiro_orders', JSON.stringify(demoOrders));
@@ -136,8 +153,22 @@ export default function AdminPanel({ onClose }) {
                     <span className="block font-mono text-[10px] text-white font-medium">{order.merchant_uid}</span>
                   </td>
                   <td className="p-4 font-medium">
-                    오가피로 750ml <br/>
-                    <span className="text-gold text-[10px]">{order.quantity}병</span>
+                    {order.items && order.items.length > 0 ? (
+                      order.items.map((item, i) => (
+                        <div key={i}>
+                          <span>{item.name}</span><br/>
+                          <span className="text-gold text-[10px]">{item.quantity}병</span>
+                        </div>
+                      ))
+                    ) : (
+                      <>
+                        오가피로<br/>
+                        <span className="text-gold text-[10px]">{order.quantity}병</span>
+                      </>
+                    )}
+                    {order.memo && (
+                      <span className="block text-[9px] text-gray-500 mt-1">메모: {order.memo}</span>
+                    )}
                   </td>
                   <td className="p-4 font-medium text-gray-300">
                     {order.recipient} <br/>
@@ -148,8 +179,12 @@ export default function AdminPanel({ onClose }) {
                   </td>
                   <td className="p-4">
                     <span className="font-semibold font-serif block text-white">{order.amount.toLocaleString()}원</span>
-                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-gray-400 font-semibold inline-block mt-1">
-                      {order.method === 'kakaopay' ? '카카오페이' : '토스페이'}
+                    <span className={`text-[9px] px-1.5 py-0.5 rounded font-semibold inline-block mt-1 ${
+                      order.method === '무통장 입금'
+                        ? 'bg-amber-900/30 border border-amber-700/30 text-amber-400'
+                        : 'bg-white/5 border border-white/10 text-gray-400'
+                    }`}>
+                      {order.method}
                     </span>
                   </td>
                   <td className="p-4 text-center">

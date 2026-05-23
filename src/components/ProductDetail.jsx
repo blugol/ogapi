@@ -2,40 +2,77 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, Calendar, FileText, ChevronDown, ChevronUp, ShoppingBag, ShoppingCart } from 'lucide-react';
 
+const PRODUCTS = [
+  {
+    id: 'ogapiro_750ml',
+    name: '오가피로 750ml',
+    label: '750ml',
+    price: 45000,
+    image: '/assets/story_2.png',
+    badge: '베스트셀러',
+    desc: '맑은 공기와 건강한 흙에서 자란 국내산 오가피만을 엄선하여, 조선행도가의 전통 옹기 발효 비법으로 오랜 시간 다려낸 건강 농축액입니다. 오가피 본연의 깊은 풍미와 자연스러운 단맛을 담아 남녀노소 누구나 즐기실 수 있습니다.'
+  },
+  {
+    id: 'ogapiro_375ml',
+    name: '오가피로 375ml',
+    label: '375ml',
+    price: 22000,
+    image: '/assets/story_1.png',
+    badge: '소용량 · 선물용',
+    desc: '처음 오가피를 경험하시거나 선물로 드리기에 좋은 소용량 패키지입니다. 동일한 품질의 발효 오가피 농축액을 합리적인 가격으로 부담 없이 만나보세요.'
+  }
+];
+
 export default function ProductDetail({ onPurchase, onAddToCart }) {
   const [quantity, setQuantity] = useState(1);
   const [showLegalInfo, setShowLegalInfo] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(PRODUCTS[0]);
 
-  // 실제 사이트 기준 가격 반영 (오가피로 750ml: 45,000원)
-  const pricePerUnit = 45000; 
-  const totalAmount = pricePerUnit * quantity;
+  const totalAmount = selectedProduct.price * quantity;
 
   const handleAddToCartClick = () => {
     if (onAddToCart) {
-      onAddToCart(quantity);
+      onAddToCart(quantity, selectedProduct.id, selectedProduct.name, selectedProduct.price);
     }
   };
 
   return (
     <section id="product-detail" className="py-16 md:py-24 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto border-t border-white/10 bg-obsidian">
+      {/* 제품 선택 탭 */}
+      <div className="flex gap-2 mb-8 max-w-xs">
+        {PRODUCTS.map(p => (
+          <button
+            key={p.id}
+            onClick={() => { setSelectedProduct(p); setQuantity(1); }}
+            className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-bold transition-all cursor-pointer border ${
+              selectedProduct.id === p.id
+                ? 'bg-gold text-black border-gold'
+                : 'bg-white/5 text-gray-300 border-white/10 hover:border-gold/30'
+            }`}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+
       <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
         {/* Left: Product Images & Quality Badges */}
         <div className="space-y-6 w-full max-w-lg mx-auto md:max-w-none">
           <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            key={selectedProduct.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
             className="relative aspect-square rounded-3xl overflow-hidden bg-white/5 border border-white/10 shadow-xl"
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent z-10"></div>
             <img 
-              src="/assets/story_2.png" 
-              alt="오가피로 발효 오가피 농축액" 
+              src={selectedProduct.image} 
+              alt={selectedProduct.name} 
               className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
             />
-            {/* Premium Badge */}
             <span className="absolute top-4 left-4 md:top-6 md:left-6 z-20 bg-gold text-black px-4 py-2 text-xs font-bold tracking-wider rounded-full">
-              전통 발효 오가피 농축액
+              {selectedProduct.badge}
             </span>
           </motion.div>
 
@@ -65,10 +102,10 @@ export default function ProductDetail({ onPurchase, onAddToCart }) {
           <div className="space-y-3">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black tracking-tight leading-snug">
               오가피로 발효 고농축액 <br/>
-              <span className="gold-gradient">750ml</span>
+              <span className="gold-gradient">{selectedProduct.label}</span>
             </h2>
             <p className="text-sm text-gray-200 font-normal leading-relaxed">
-              맑은 공기와 건강한 흙에서 자란 국내산 오가피만을 엄선하여, 조선행도가의 정성스러운 전통 옹기 발효 비법으로 오랜 시간 다려낸 건강 농축액입니다. 오가피 본연의 깊은 풍미와 자연스러운 단맛을 온전히 담아내어 남녀노소 누구나 부드럽게 드실 수 있습니다. 물이나 따뜻한 차, 탄산수에 희석하여 온 가족의 일상 건강 음료로 즐기기에 좋습니다.
+              {selectedProduct.desc}
             </p>
           </div>
 
@@ -76,9 +113,9 @@ export default function ProductDetail({ onPurchase, onAddToCart }) {
           <div className="py-4 border-y border-white/10 flex items-baseline justify-between">
             <span className="text-xs sm:text-sm text-gray-300 font-medium">판매 가격</span>
             <div className="space-y-1 text-right">
-              <span className="text-3xl sm:text-4xl font-extrabold font-serif text-white">{pricePerUnit.toLocaleString()}</span>
+              <span className="text-3xl sm:text-4xl font-extrabold font-serif text-white">{selectedProduct.price.toLocaleString()}</span>
               <span className="text-sm sm:text-lg text-white font-medium ml-1">원</span>
-              <p className="text-[10px] sm:text-xs text-gold font-semibold">※ 정성을 담아 안전하게 배송되는 유리병 전용 패키지 포함</p>
+              <p className="text-[10px] sm:text-xs text-gold font-semibold">무료배송 · 정성을 담아 안전 포장</p>
             </div>
           </div>
 
@@ -121,7 +158,7 @@ export default function ProductDetail({ onPurchase, onAddToCart }) {
               <span>장바구니 담기</span>
             </button>
             <button 
-              onClick={() => onPurchase(quantity, totalAmount)}
+              onClick={() => onPurchase(quantity, totalAmount, selectedProduct.id, selectedProduct.name, selectedProduct.price)}
               className="flex-2 h-14 sm:h-16 bg-gold text-black font-bold text-sm sm:text-base rounded-2xl hover:bg-gold/90 hover:-translate-y-0.5 active:translate-y-0 transition-all shadow-xl shadow-gold/10 flex items-center justify-center space-x-3 cursor-pointer"
             >
               <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />

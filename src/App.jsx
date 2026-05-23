@@ -23,34 +23,47 @@ function App() {
   const [receipt, setReceipt] = useState(null);
   const [isAdminActive, setIsAdminActive] = useState(false);
 
-  // Cart State
-  const [cartItems, setCartItems] = useState([]);
+  // Cart State - localStorage로 영속화
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const saved = localStorage.getItem('ogapiro_cart');
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [checkoutCartItems, setCheckoutCartItems] = useState([]); // 주문서에 넘길 실제 아이템
+
+  // 장바구니 localStorage 동기화
+  useEffect(() => {
+    localStorage.setItem('ogapiro_cart', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   // 장바구니 담기 핸들러
-  const handleAddToCart = (quantity) => {
+  const handleAddToCart = (quantity, productId = 'ogapiro_750ml', productName = '오가피로 750ml', price = 45000) => {
     setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === 'ogapiro_750ml');
+      const existingItem = prevItems.find(item => item.id === productId);
+      let updated;
       if (existingItem) {
-        return prevItems.map(item => 
-          item.id === 'ogapiro_750ml' 
+        updated = prevItems.map(item => 
+          item.id === productId 
             ? { ...item, quantity: item.quantity + quantity } 
             : item
         );
       } else {
-        return [
+        updated = [
           ...prevItems,
           {
-            id: 'ogapiro_750ml',
-            name: '오가피로 발효 오가피 농축액 750ml',
-            price: 45000,
+            id: productId,
+            name: productName,
+            price: price,
             quantity: quantity,
-            image: '/assets/story_2.png'
+            image: productId === 'ogapiro_375ml' ? '/assets/story_1.png' : '/assets/story_2.png'
           }
         ];
       }
+      return updated;
     });
-    setIsCartOpen(true); // 담은 즉시 장바구니 드로어 오픈
+    setIsCartOpen(true);
   };
 
   // 장바구니 수량 조정
@@ -73,14 +86,25 @@ function App() {
     const totalAmt = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     setCheckoutQuantity(totalQty);
     setCheckoutTotal(totalAmt);
+    setCheckoutCartItems([...cartItems]); // 현재 장바구니 복사
     setIsCartOpen(false);
     setIsCheckoutActive(true);
   };
 
-  // 구매 진행 핸들러 (로그인 장벽을 완전히 걷어내고 즉시 결제 주문서로 진입!)
-  const handlePurchaseInit = (quantity, totalAmount) => {
+  // 구매 진행 핸들러 (로그인 없이 즉시 주문서 진입)
+  const handlePurchaseInit = (quantity, totalAmount, productId, productName, price) => {
     setCheckoutQuantity(quantity);
     setCheckoutTotal(totalAmount);
+    // 단일 상품 빠른구매
+    setCheckoutCartItems([
+      {
+        id: productId || 'ogapiro_750ml',
+        name: productName || '오가피로 750ml',
+        price: price || 45000,
+        quantity: quantity,
+        image: (productId === 'ogapiro_375ml') ? '/assets/story_1.png' : '/assets/story_2.png'
+      }
+    ]);
     setIsCheckoutActive(true);
   };
 
@@ -100,7 +124,6 @@ function App() {
 
   // 결제 성공 핸들러
   const handlePaymentSuccess = (receiptDetails) => {
-    // 실시간 주문 데이터를 로컬스토리지 DB에 연동 (어드민 연동)
     const newOrder = {
       merchant_uid: receiptDetails.merchant_uid,
       recipient: receiptDetails.recipient,
@@ -108,15 +131,16 @@ function App() {
       address: receiptDetails.address,
       amount: receiptDetails.amount,
       quantity: checkoutQuantity,
+      items: checkoutCartItems,
       method: receiptDetails.method,
       status: '배송 대기',
+      memo: receiptDetails.memo || '',
       created_at: new Date().toLocaleString()
     };
 
     const savedOrders = localStorage.getItem('ogapiro_orders');
     const ordersList = savedOrders ? JSON.parse(savedOrders) : [];
-    const updatedOrdersList = [newOrder, ...ordersList];
-    localStorage.setItem('ogapiro_orders', JSON.stringify(updatedOrdersList));
+    localStorage.setItem('ogapiro_orders', JSON.stringify([newOrder, ...ordersList]));
 
     setReceipt(receiptDetails);
     setIsCheckoutActive(false);
@@ -366,7 +390,7 @@ function App() {
                 onPaymentSuccess={handlePaymentSuccess}
                 onKakaoLogin={() => setIsLoginModalOpen(true)}
                 onLogout={logout}
-                cartItems={cartItems}
+                cartItems={checkoutCartItems}
               />
             </motion.div>
           </div>
@@ -424,57 +448,84 @@ function App() {
               initial={{ scale: 0.9, opacity: 0, y: 30 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 30 }}
-              className="relative w-full max-w-md overflow-hidden rounded-3xl bg-[#131313] p-6 sm:p-8 border border-gold/20 shadow-2xl text-center space-y-5 sm:space-y-6 mx-auto"
+              className="relative w-full max-w-md overflow-hidden rounded-3xl bg-[#131313] p-6 sm:p-8 border border-gold/20 shadow-2xl text-center space-y-5 mx-auto"
             >
-              <CheckCircle2 className="w-12 h-12 sm:w-16 sm:h-16 text-gold mx-auto" />
+              <CheckCircle2 className="w-14 h-14 text-gold mx-auto" />
               <div className="space-y-2">
                 <span className="inline-block bg-gold/10 text-gold px-3.5 py-1.5 rounded-full text-xs font-bold">
-                  주문 완료
+                  {receipt.method === '무통장 입금' ? '주문 접수 완료' : '결제 완료'}
                 </span>
-                <h3 className="text-2xl font-serif font-bold leading-tight">주문이 정상적으로 <br/>접수되었습니다</h3>
-                <p className="text-xs text-gray-200 font-medium leading-relaxed">
-                  정성 가득 담은 오가피 농축액을 신속하고 안전하게 배송해 드리겠습니다.
+                <h3 className="text-xl sm:text-2xl font-serif font-bold leading-tight">
+                  주문이 정상적으로 <br/>접수되었습니다
+                </h3>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  {receipt.method === '무통장 입금'
+                    ? '위 계좌로 입금 확인 후 1~2 영업일 내 발송됩니다.'
+                    : '정성 담은 오가피 농축액을 신속히 배송해 드리겠습니다.'}
                 </p>
               </div>
 
               {/* Receipt Body */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-white/2 border border-white/10 text-left text-xs space-y-2.5 font-medium text-gray-200">
-                <div className="flex justify-between">
-                  <span>주문 번호:</span>
-                  <span className="text-white font-mono">{receipt.merchant_uid}</span>
+              <div className="p-4 rounded-2xl bg-white/2 border border-white/10 text-left text-xs space-y-2.5 font-medium text-gray-300">
+                <div className="flex justify-between items-center">
+                  <span>주문 번호</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-white font-mono text-[11px]">{receipt.merchant_uid}</span>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(receipt.merchant_uid)}
+                      className="text-gold text-[10px] hover:text-white transition-colors cursor-pointer"
+                    >복사</button>
+                  </div>
                 </div>
                 <div className="flex justify-between">
-                  <span>수령인:</span>
+                  <span>수령인</span>
                   <span className="text-white font-bold">{receipt.recipient}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>연락처:</span>
+                  <span>연락처</span>
                   <span className="text-white font-bold">{receipt.phone}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>배송 주소:</span>
-                  <span className="text-white font-bold text-right max-w-[200px] truncate">{receipt.address}</span>
+                  <span>배송 주소</span>
+                  <span className="text-white font-bold text-right max-w-[200px]">{receipt.address}</span>
                 </div>
+                {receipt.memo && (
+                  <div className="flex justify-between">
+                    <span>배송 메모</span>
+                    <span className="text-white">{receipt.memo}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
-                  <span>결제 수단:</span>
-                  <span className="text-gold font-bold">{receipt.method === 'kakaopay' ? '카카오페이' : '토스페이'} 간편결제</span>
+                  <span>결제 수단</span>
+                  <span className="text-gold font-bold">{receipt.method}</span>
                 </div>
-                <div className="border-t border-white/10 pt-2 flex justify-between font-black text-sm">
-                  <span className="text-gold">최종 결제액:</span>
+                {/* 무통장 입금 시 계좌 정보 재표시 */}
+                {receipt.method === '무통장 입금' && receipt.bank && (
+                  <div className="mt-2 p-3 rounded-xl bg-amber-900/20 border border-amber-700/30 space-y-1.5">
+                    <p className="text-amber-400 font-bold text-[11px]">💳 입금 계좌</p>
+                    <p className="text-white font-mono">{receipt.bank.bank} {receipt.bank.account}</p>
+                    <p className="text-gray-400 text-[10px]">예금주: {receipt.bank.holder}</p>
+                    <p className="text-amber-500/80 text-[10px]">입금액: {receipt.amount.toLocaleString()}원</p>
+                  </div>
+                )}
+                <div className="border-t border-white/10 pt-2.5 flex justify-between font-black text-sm">
+                  <span className="text-white">결제금액</span>
                   <span className="text-gold font-serif">{receipt.amount.toLocaleString()}원</span>
                 </div>
               </div>
 
               <button
                 onClick={() => setReceipt(null)}
-                className="w-full h-11 sm:h-12 bg-gold text-black font-bold text-xs rounded-xl hover:bg-gold/90 transition-all cursor-pointer"
+                className="w-full h-12 bg-gold text-black font-bold text-sm rounded-xl hover:bg-gold/90 transition-all cursor-pointer"
               >
-                영수증 확인 및 돌아가기
+                확인
               </button>
+              <p className="text-[10px] text-gray-600">문의사항: kellyou@empas.com · 041-633-2676</p>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
+
 
       {/* Inquiry Form */}
       <InquiryForm />
