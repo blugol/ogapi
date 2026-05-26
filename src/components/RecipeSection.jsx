@@ -25,12 +25,12 @@ export default function RecipeSection() {
   ];
 
   return (
-    <section id="recipe" className="py-20 px-6 bg-obsidian border-t border-white/10">
+    <section id="recipe" className="py-12 md:py-20 px-4 sm:px-6 bg-obsidian border-t border-white/10">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-gold text-xs uppercase tracking-widest mb-2 font-semibold">How to Enjoy</p>
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">오가피로를 즐기는 3가지 방법</h2>
-          <p className="text-gray-300 text-sm md:text-base">오가피로 고농축액은 기호에 따라 다양하게 희석하여 즐기실 수 있습니다.</p>
+        <div className="text-center mb-10 md:mb-16">
+          <p className="text-gold text-[10px] md:text-xs uppercase tracking-widest mb-2 font-semibold">How to Enjoy</p>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-white mb-3 md:mb-4">오가피로를 즐기는 3가지 방법</h2>
+          <p className="text-gray-300 text-xs sm:text-sm md:text-base">오가피로 고농축액은 기호에 따라 다양하게 희석하여 즐기실 수 있습니다.</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">

@@ -37,9 +37,9 @@ export default function ProductDetail({ onPurchase, onAddToCart }) {
   };
 
   return (
-    <section id="product-detail" className="py-16 md:py-24 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto border-t border-white/10 bg-obsidian">
+    <section id="product-detail" className="py-12 md:py-24 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto border-t border-white/10 bg-obsidian">
       {/* 제품 선택 탭 */}
-      <div className="flex gap-2 mb-8 max-w-xs">
+      <div className="flex gap-2 mb-6 md:mb-8 w-full max-w-xs mx-auto md:mx-0">
         {PRODUCTS.map(p => (
           <button
             key={p.id}
@@ -100,11 +100,11 @@ export default function ProductDetail({ onPurchase, onAddToCart }) {
         <div className="space-y-6 md:space-y-8 w-full max-w-lg mx-auto md:max-w-none">
           {/* Headline */}
           <div className="space-y-3">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black tracking-tight leading-snug">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif font-black tracking-tight leading-snug">
               오가피로 발효 고농축액 <br/>
               <span className="gold-gradient">{selectedProduct.label}</span>
             </h2>
-            <p className="text-sm text-gray-200 font-normal leading-relaxed">
+            <p className="text-sm md:text-base text-gray-200 font-normal leading-relaxed">
               {selectedProduct.desc}
             </p>
           </div>

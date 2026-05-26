@@ -220,21 +220,16 @@ function App() {
           >
             조선행도가
           </motion.p>
-          <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="text-5xl sm:text-6xl md:text-8xl font-serif font-black mb-8 leading-tight"
-          >
-            조선행도가 <br/> <span className="gold-gradient">오가피로</span>
-          </motion.h1>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif font-black mb-6 md:mb-8 leading-tight">
+            나를 아끼는 습관, <br />
+            <span className="gold-gradient">오늘은 오가피로</span>
+          </h1>
           <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1 }}
             className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-gray-200 font-medium leading-relaxed mb-12"
           >
-            나를 아끼는 습관, 오늘은 오가피로 <br/>
             첨가물 없이 정성껏 다려낸 발효 오가피 농축액으로 온 가족의 건강을 챙겨보세요.
           </motion.p>
           <motion.div
@@ -252,9 +247,9 @@ function App() {
         </div>
       </header>
 
-      {/* Story Section */}
-      <section id="story" className="py-24 md:py-32 px-4 sm:px-8 max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center mb-24 md:mb-32">
+      {/* Brand Story Section */}
+      <section id="story" className="py-16 md:py-32 px-4 sm:px-8 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center mb-24 md:mb-40">
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -314,12 +309,12 @@ function App() {
       </section>
 
       {/* Philosophy Section */}
-      <section className="bg-emerald-dark/10 py-24 md:py-32 border-y border-white/10">
-        <div className="max-w-4xl mx-auto px-6 text-center space-y-8 md:space-y-12">
+      <section className="bg-emerald-dark/10 py-16 md:py-32 border-y border-white/10">
+        <div className="max-w-4xl mx-auto px-6 text-center space-y-6 md:space-y-12">
           <Heart className="mx-auto text-gold w-10 h-10 md:w-12 md:h-12" />
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif italic leading-snug">"나와 가족을 위한 건강한 습관, 오가피로"</h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 font-medium leading-relaxed">
-            건강한 몸과 편안한 하루를 위한 선택. <br/>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-serif italic leading-snug">"나와 가족을 위한 건강한 습관, 오가피로"</h2>
+          <p className="text-sm sm:text-base md:text-xl text-gray-200 font-medium leading-relaxed">
+            건강한 몸과 편안한 하루를 위한 선택. <br className="hidden sm:block"/>
             첨가물 없이 정성을 다해 다려낸 오가피의 기운이 온 가족의 일상을 활기차게 깨웁니다.
           </p>
         </div>
@@ -329,7 +324,7 @@ function App() {
       <RecipeSection />
 
       {/* Products Preview Section - 제품 라인업 */}
-      <section className="py-16 md:py-20 px-4 sm:px-8 border-t border-white/10">
+      <section className="py-12 md:py-20 px-4 sm:px-8 border-t border-white/10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-gold text-xs uppercase tracking-widest mb-2 font-semibold">오가피로 시리즈</p>
