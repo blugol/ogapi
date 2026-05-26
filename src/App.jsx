@@ -7,6 +7,7 @@ import LoginModal from './components/LoginModal';
 import CheckoutForm from './components/CheckoutForm';
 import AdminPanel from './components/AdminPanel';
 import CartDrawer from './components/CartDrawer';
+import RecipeSection from './components/RecipeSection';
 import { useAuth } from './hooks/useAuth';
 
 function App() {
@@ -323,6 +324,9 @@ function App() {
           </p>
         </div>
       </section>
+
+      {/* Recipe Section */}
+      <RecipeSection />
 
       {/* Products Preview Section - 제품 라인업 */}
       <section className="py-16 md:py-20 px-4 sm:px-8 border-t border-white/10">
