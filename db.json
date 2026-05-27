@@ -1,0 +1,28 @@
+{
+  "orders": [
+    {
+      "id": "OG-8201-3849",
+      "date": "2026-05-27T10:00:00Z",
+      "customerName": "김가네",
+      "phone": "010-1234-5678",
+      "items": [
+        { "name": "오가피로 750ml", "quantity": 2, "price": 45000 }
+      ],
+      "totalAmount": 90000,
+      "status": "입금대기",
+      "shippingAddress": "서울시 강남구 테헤란로 123 4층"
+    },
+    {
+      "id": "OG-8201-9122",
+      "date": "2026-05-26T15:30:00Z",
+      "customerName": "이민호",
+      "phone": "010-9876-5432",
+      "items": [
+        { "name": "오가피로 375ml", "quantity": 1, "price": 25000 }
+      ],
+      "totalAmount": 25000,
+      "status": "배송중",
+      "shippingAddress": "경기도 성남시 분당구 판교역로 456"
+    }
+  ]
+}

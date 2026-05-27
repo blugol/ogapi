@@ -9,6 +9,7 @@ import AdminPanel from './components/AdminPanel';
 import CartDrawer from './components/CartDrawer';
 import RecipeSection from './components/RecipeSection';
 import { useAuth } from './hooks/useAuth';
+import { api } from './lib/api';
 
 function App() {
   const { scrollY } = useScroll();
@@ -124,28 +125,31 @@ function App() {
   };
 
   // 결제 성공 핸들러
-  const handlePaymentSuccess = (receiptDetails) => {
+  const handlePaymentSuccess = async (receiptDetails) => {
     const newOrder = {
-      merchant_uid: receiptDetails.merchant_uid,
-      recipient: receiptDetails.recipient,
+      id: receiptDetails.merchant_uid,
+      date: new Date().toISOString(),
+      customerName: receiptDetails.recipient,
       phone: receiptDetails.phone,
-      address: receiptDetails.address,
-      amount: receiptDetails.amount,
-      quantity: checkoutQuantity,
-      items: checkoutCartItems,
-      method: receiptDetails.method,
-      status: '배송 대기',
-      memo: receiptDetails.memo || '',
-      created_at: new Date().toLocaleString()
+      items: checkoutCartItems.map(item => ({ name: item.name, quantity: item.quantity, price: item.price })),
+      totalAmount: receiptDetails.amount,
+      status: receiptDetails.method.includes('무통장') ? '입금대기' : '배송대기',
+      shippingAddress: receiptDetails.address,
+      memo: receiptDetails.memo || ''
     };
 
-    const savedOrders = localStorage.getItem('ogapiro_orders');
-    const ordersList = savedOrders ? JSON.parse(savedOrders) : [];
-    localStorage.setItem('ogapiro_orders', JSON.stringify([newOrder, ...ordersList]));
+    try {
+      // 1. 실제 백엔드(API)로 주문 데이터 전송
+      await api.createOrder(newOrder);
 
-    setReceipt(receiptDetails);
-    setIsCheckoutActive(false);
-    setCartItems([]); // 결제 완료 후 장바구니 비우기
+      // 2. 프론트엔드 상태 업데이트
+      setReceipt(receiptDetails);
+      setIsCheckoutActive(false);
+      setCartItems([]); // 결제 완료 후 장바구니 비우기
+    } catch (err) {
+      console.error('주문 저장 실패:', err);
+      alert('주문 처리 중 오류가 발생했습니다. 고객센터로 문의해주세요.');
+    }
   };
 
   return (
